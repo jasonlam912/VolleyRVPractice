@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Cook Book With 360K+ Recipes</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="end_text">No More Recipe</string>
+    <string name="apiKeyUsing">22490cb12d2d45c7aafe40f28b4aa804</string>
+    <string name="apiKey1">17d59d79ec404c85838d4731da66410a</string>
+    <string name="apiKey2">22490cb12d2d45c7aafe40f28b4aa804</string>
+
+    <string name="open_drawer">Open</string>
+    <string name="close_drawer">Close</string>
+</resources>
