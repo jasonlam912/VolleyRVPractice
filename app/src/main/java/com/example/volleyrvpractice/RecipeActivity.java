@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
@@ -113,10 +114,11 @@ public class RecipeActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_recipe_instruction);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_nutrition);
 
+        /*
         for(int i=0; i<3; i++){
             tabLayout.getTabAt(i).getOrCreateBadge().setNumber(1);
-        }
-        fRViewModel = ViewModelProviders.of(this).get(FavouriteRecipeViewModel.class);
+        }*/
+        fRViewModel = new ViewModelProvider(this).get(FavouriteRecipeViewModel.class);
 
     }
 

@@ -4,14 +4,20 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorUnselected">#017065</color>
-    <color name="tab_background">#4D000000</color>
+    <color name="tab_background">#99000000</color>
     <color name="action_bar_bg">#004740</color>
     <color name="toolbar_edit_text">#016359</color>
     <color name="toolbar_hint">#029183</color>
     <color name="status_bar_bg">#002E2A</color>
+    <color name="expanded_title_transparent">#03000000</color>
     <color name="colorToolbarTitle">#FFFFFF</color>
     <color name="app_background">#121212</color>
 
     <color name="black">#000000</color>
     <color name="navigation_background">#B3FFFFFF</color>
+
+    <color name="translucent_scrim_top">#26000000</color>
+    <color name="translucent_scrim_top_center">#0C000000</color>
+    <color name="translucent_scrim_bottom">#2A000000</color>
+    <color name="translucent_scrim_bottom_center">#0D000000</color>
 </resources>
