@@ -3,6 +3,8 @@ package com.example.volleyrvpractice;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -23,6 +26,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeViewModel;
 import com.example.volleyrvpractice.IngredientClasses.IngredientFragement;
@@ -41,6 +46,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class RecipeActivity extends AppCompatActivity {
+
+    //Toolbar UI objecct ---------------------------------------------------------------------------
+    private String subImageUrl1 = "https://spoonacular.com/recipeImages/";
+    private String subImageUrl2 = "-556x370.jpg";
+    private AppCompatTextView recipeTitleTextView;
+    private ImageView recipeImageView;
+    //Toolbar UI objecct ---------------------------------------------------------------------------
 
     //Tab UI object---------------------------------------------------------------------------------
     private ViewPager viewPager;
@@ -69,7 +81,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         recipe_id = getIntent().getStringExtra("id");
         recipe_title = getIntent().getStringExtra("title");
-        getSupportActionBar().setTitle(recipe_title);
+        initializeToolBar();
         is_favourite_recipe = getIntent().getBooleanExtra("favourite_recipe",true);
         //Log.d("onCreate",recipe_id);
         viewPager = findViewById(R.id.view_pager);
@@ -106,6 +118,18 @@ public class RecipeActivity extends AppCompatActivity {
         }
         fRViewModel = ViewModelProviders.of(this).get(FavouriteRecipeViewModel.class);
 
+    }
+
+    private void initializeToolBar(){
+        recipeTitleTextView = findViewById(R.id.recipe_title);
+        recipeImageView = findViewById(R.id.recipe_image);
+        recipeTitleTextView.setText(recipe_title);
+        Glide.with(this).load(subImageUrl1+recipe_id+subImageUrl2).diskCacheStrategy(DiskCacheStrategy.ALL).into(recipeImageView);
+        Toolbar toolbar = findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("");
     }
 
     @Override

@@ -16,8 +16,17 @@
         <item name="android:textColorHint">@color/toolbar_hint</item>
     </style>
 
-    <style name="AppThemeMain" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppThemeMain" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/action_bar_bg</item>
+        <item name="colorPrimaryDark">@color/toolbar_hint</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="drawerArrowStyle">@style/toggle.style</item>
+        <item name="titleTextColor">@color/colorToolbarTitle</item>
+        <item name="searchIcon">@color/colorToolbarTitle</item>
+    </style>
+
+    <style name="AppThemeRecipe" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/action_bar_bg</item>
         <item name="colorPrimaryDark">@color/toolbar_hint</item>
         <item name="colorAccent">@color/colorAccent</item>
