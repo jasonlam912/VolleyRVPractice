@@ -59,9 +59,8 @@ public class FavouriteRecipeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite_recipe);
-        RequestQueue queue = MySingleton.getInstance(this).getRequestQueue();
         rv = findViewById(R.id.favourite_recipe_rv);
-        adapter = new RecipeAdapter(FavouriteRecipeActivity.this, fRTitles, fRImageUrls, fRIDs, fRStatus, fRIndicators, queue);
+        adapter = new RecipeAdapter(FavouriteRecipeActivity.this, fRTitles, fRImageUrls, fRIDs, fRStatus, fRIndicators);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(FavouriteRecipeActivity.this, RecyclerView.VERTICAL, false));
         fRViewModel = new ViewModelProvider(this).get(FavouriteRecipeViewModel.class);

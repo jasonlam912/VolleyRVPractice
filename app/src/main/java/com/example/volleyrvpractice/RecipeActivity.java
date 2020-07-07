@@ -129,7 +129,7 @@ public class RecipeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle(recipe_title);
     }
 
     @Override

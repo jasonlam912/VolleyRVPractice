@@ -18,9 +18,9 @@
             android:layout_height="300dp"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
-            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleGravity="top"
+            app:contentScrim="@color/action_bar_bg"
             app:layout_scrollFlags="exitUntilCollapsed|scroll|snap">
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/recipe_title"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="56dp"
                     android:layout_gravity="bottom"
                     android:background="#59000000"
                     android:gravity="center"
@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:background="#303030"
+                android:background="@color/tab_background"
                 app:tabIconTint="@drawable/tab_background"
                 app:tabIndicatorColor="@color/colorAccent"
                 app:tabTextColor="@drawable/tab_background">

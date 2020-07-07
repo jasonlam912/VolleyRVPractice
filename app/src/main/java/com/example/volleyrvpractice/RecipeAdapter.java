@@ -45,7 +45,7 @@ public class RecipeAdapter extends RecyclerView.Adapter {
     private FavouriteRecipeViewModel fRViewModel;
     private List<Boolean> fRIndicators;
 
-    public RecipeAdapter(Context ct, List<String> recipe_title, List<String> image_link, List<String> recipe_id,List<Integer> recipe_status, List<Boolean> fRIndicators, RequestQueue queue){
+    public RecipeAdapter(Context ct, List<String> recipe_title, List<String> image_link, List<String> recipe_id,List<Integer> recipe_status, List<Boolean> fRIndicators){
         this.ct = ct;
         this.recipe_title = recipe_title;
         this.image_link = image_link;

@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
     private String subImageUrl1 = "https://spoonacular.com/recipeImages/";
     private String subImageUrl2 = "-556x370.jpg";
     //volley things
-    RequestQueue queue;
     private ProgressBar loadingRecipePB;
     private SwipeRefreshLayout swipeRecipeRVContainer;
 
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         swipeRecipeRVContainer = findViewById(R.id.swipe_recipe_rv_container);
 
         rv = findViewById(R.id.recipe_rv);
-        adapter = new RecipeAdapter(this, recipe_title, image_link, recipe_id,recipe_status,fRIndicators, queue);
+        adapter = new RecipeAdapter(this, recipe_title, image_link, recipe_id,recipe_status,fRIndicators);
         rv.setAdapter(adapter);
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             manager = new LinearLayoutManager(this);
@@ -347,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
         swipeRecipeRVContainer.setRefreshing(false);
     }
 
-    private Boolean checkIdInsideFRList(String recipe_id){
+    private boolean checkIdInsideFRList(String recipe_id){
         for(int j=0; j<tempFRs.size(); j++){
             if(recipe_id.equals(tempFRs.get(j).getId())) {
                 return true;
