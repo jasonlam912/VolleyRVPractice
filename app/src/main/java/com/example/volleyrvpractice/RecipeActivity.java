@@ -68,8 +68,6 @@ public class RecipeActivity extends AppCompatActivity {
     private String recipe_id;
     private String recipe_title;
     private boolean is_favourite_recipe;
-    private HashMap<String, List<String>> recipeData;
-    private RequestQueue requestQueue;
     private FavouriteRecipeViewModel fRViewModel;
     //Data Object-----------------------------------------------------------------------------------
 
@@ -196,6 +194,7 @@ public class RecipeActivity extends AppCompatActivity {
         }
     }
 
+    /*
     public void loadRecipeDetails(){
         String url = "https://api.spoonacular.com/recipes/"+recipe_id+"/information?includeNutrition=false&apiKey="+getResources().getString(R.string.apiKeyUsing);
         Log.d("url", url);
@@ -236,6 +235,8 @@ public class RecipeActivity extends AppCompatActivity {
         }
         Log.d("recipeData",recipeData.toString());
     }
+    */
+
 
     private Bundle bundleForIngredientFragment(){
         Bundle bundle = new Bundle();

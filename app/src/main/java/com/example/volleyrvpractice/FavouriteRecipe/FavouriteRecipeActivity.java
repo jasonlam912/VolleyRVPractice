@@ -3,29 +3,21 @@ package com.example.volleyrvpractice.FavouriteRecipe;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeViewModel;
-import com.example.volleyrvpractice.MySingleton;
 import com.example.volleyrvpractice.R;
 import com.example.volleyrvpractice.RecipeAdapter;
-import com.example.volleyrvpractice.TestAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class FavouriteRecipeActivity extends AppCompatActivity {
 

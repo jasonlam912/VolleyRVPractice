@@ -18,7 +18,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.example.volleyrvpractice.Network.NetworkManager;
 import com.example.volleyrvpractice.R;
 
 import org.json.JSONArray;
@@ -113,7 +113,7 @@ public class IngredientFragement extends Fragment {
             rv.setLayoutManager(new GridLayoutManager(getContext(),2));
         }
         rv.setAdapter(adapter);
-        queue = Volley.newRequestQueue(getContext());
+        queue = NetworkManager.getInstance(this.getContext()).getRequestQueue();
         loadRecipeDetails();
 
         return view;

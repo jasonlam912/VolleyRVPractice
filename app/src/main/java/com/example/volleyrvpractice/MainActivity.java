@@ -8,7 +8,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,14 +25,13 @@ import android.widget.SearchView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.volleyrvpractice.FavouriteRecipe.FavouriteRecipeActivity;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeViewModel;
+import com.example.volleyrvpractice.Network.NetworkManager;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
@@ -224,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(50000,5,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+        NetworkManager.getInstance(this.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
     }
 
     private void addSearchList(int offset, JSONObject response) throws JSONException {
@@ -312,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(50000,5,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+        NetworkManager.getInstance(this.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
     }
 
     private void addRandomList(int offset, JSONObject response) throws JSONException {
