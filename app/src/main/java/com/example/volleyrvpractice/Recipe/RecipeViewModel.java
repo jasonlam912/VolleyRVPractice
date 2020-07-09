@@ -20,17 +20,30 @@ public class RecipeViewModel extends ViewModel {
     public RecipeViewModel() {
         this.data = new MutableLiveData<>();
         this.data.setValue(new ArrayList<RecipeModel>());
+        addPaddingItem();
+        addPaddingItem();
     }
 
     public void resetData(){
         this.data.setValue(new ArrayList<RecipeModel>());
+        addPaddingItem();
+        addPaddingItem();
     }
 
     public void putRandomRecipe(Context ct){
         NetworkManager.getInstance(ct).getRandomRecipe(new CallbackListener() {
             @Override
             public void getResult(JSONObject jsonObject) throws JSONException {
-                 data.getValue().addAll(JsonData2Recipe.jsonObject2Recipe(jsonObject));
+                deleteLastItem();
+                List<RecipeModel> list = data.getValue();
+                List<RecipeModel> newList = JsonData2Recipe.jsonObject2Recipe(jsonObject);
+                list.addAll(newList);
+                data.setValue(list);
+                if(newList.size()==0){
+                    addEndItem();
+                }else{
+                    addLoadingItem();
+                }
             }
         });
     }
@@ -39,8 +52,40 @@ public class RecipeViewModel extends ViewModel {
         NetworkManager.getInstance(ct).getSearchRecipe(query, offset, new CallbackListener() {
             @Override
             public void getResult(JSONObject jsonObject) throws JSONException {
-                data.getValue().addAll(JsonData2Recipe.jsonObject2Recipe(jsonObject));
+                deleteLastItem();
+                List<RecipeModel> list = data.getValue();
+                List<RecipeModel> newList = JsonData2Recipe.jsonObject2Recipe(jsonObject);
+                list.addAll(newList);
+                data.setValue(list);
+                if(newList.size()==0){
+                    addEndItem();
+                }else{
+                    addLoadingItem();
+                }
             }
         });
+    }
+
+    public void addPaddingItem(){
+        RecipeModel recipe = new RecipeModel(null,null,null,3, true);
+        this.data.getValue().add(recipe);
+    }
+
+    public void deleteLastItem(){
+        List<RecipeModel> list = this.data.getValue();
+        list.remove(list.size()-1);
+        this.data.setValue(list);
+    }
+
+    public void addLoadingItem(){
+        List<RecipeModel> list = this.data.getValue();
+        list.add(new RecipeModel(null,null,null,1, true));
+        this.data.setValue(list);
+    }
+
+    public void addEndItem(){
+        List<RecipeModel> list = this.data.getValue();
+        list.add(new RecipeModel(null,null,null,2, true));
+        this.data.setValue(list);
     }
 }
