@@ -28,6 +28,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.load.resource.gif.GifFrameResourceDecoder;
 import com.example.volleyrvpractice.FavouriteRecipe.FavouriteRecipeActivity;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeViewModel;
@@ -55,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView nv;
     private Toolbar toolbar;
-    static boolean searching=false;
+
     static String searchString;
+    private static int orientation;
     //volley things
     private ProgressBar loadingRecipePB;
     private SwipeRefreshLayout swipeRecipeRVContainer;
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeDrawerLayout();
+        orientation = getResources().getConfiguration().orientation;
         loadingRecipePB = findViewById(R.id.loading_recipe_progress_bar);
         loadingRecipePB.setVisibility(View.INVISIBLE);
         swipeRecipeRVContainer = findViewById(R.id.swipe_recipe_rv_container);
@@ -73,11 +76,7 @@ public class MainActivity extends AppCompatActivity {
         rv = findViewById(R.id.recipe_rv);
         adapter = new RecipeAdapter(this, new ArrayList<RecipeModel>());
         rv.setAdapter(adapter);
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-            manager = new LinearLayoutManager(this);
-        }else{
-            manager = new GridLayoutManager(this,2);
-        }
+        manager = getManager(orientation);
         rv.setLayoutManager(manager);
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
                                    @Override
@@ -137,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchString=query;
-                searching = true;
                 Log.d("onQueryTextSubmit", query);
                 recipeViewModel.putSearchRecipe(MainActivity.this, query);
                 return true;
@@ -188,12 +186,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.refresh_recipe_button){
-            searching = false;
             loadingRecipePB.setVisibility(View.VISIBLE);
             recipeViewModel.resetData(this);
             recipeViewModel.putRandomRecipe(MainActivity.this);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private LinearLayoutManager getManager(int orientation){
+        if(orientation == Configuration.ORIENTATION_PORTRAIT){
+            return new LinearLayoutManager(this);
+        }else{
+            GridLayoutManager manager = new GridLayoutManager(this,2);
+            manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return adapter.getItemViewType(position)==0?1:2;
+                }
+            });
+            return manager;
+        }
     }
 }
