@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeViewModel;
 import com.example.volleyrvpractice.R;
+import com.example.volleyrvpractice.Recipe.JsonData2Recipe;
+import com.example.volleyrvpractice.Recipe.RecipeModel;
 import com.example.volleyrvpractice.RecipeAdapter;
 
 import java.util.ArrayList;
@@ -23,13 +25,6 @@ public class FavouriteRecipeActivity extends AppCompatActivity {
 
     private FavouriteRecipeViewModel fRViewModel;
     private RecyclerView rv;
-    private List<String> fRTitles = new ArrayList<>();
-    private List<String> fRIDs = new ArrayList<>();
-    private List<String> fRImageUrls = new ArrayList<>();
-    private List<Integer> fRStatus = new ArrayList<>();
-    private List<Boolean> fRIndicators = new ArrayList<>();
-    private String subImageUrl1 = "https://spoonacular.com/recipeImages/";
-    private String subImageUrl2 = "-556x370.jpg";
     private RecipeAdapter adapter;
 
 
@@ -52,43 +47,23 @@ public class FavouriteRecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite_recipe);
         rv = findViewById(R.id.favourite_recipe_rv);
-        adapter = new RecipeAdapter(FavouriteRecipeActivity.this, fRTitles, fRImageUrls, fRIDs, fRStatus, fRIndicators);
+        adapter = new RecipeAdapter(this, new ArrayList<RecipeModel>());
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(FavouriteRecipeActivity.this, RecyclerView.VERTICAL, false));
         fRViewModel = new ViewModelProvider(this).get(FavouriteRecipeViewModel.class);
         fRViewModel.getAll().observe(this, new Observer<List<FavouriteRecipe>>() {
             @Override
             public void onChanged(List<FavouriteRecipe> favouriteRecipes) {
-                /*for(int i=0; i<favouriteRecipes.size();i++){
-                    Log.d(Integer.toString(i)+" item", favouriteRecipes.get(i).getId());
-                }*/
-                inputData(favouriteRecipes);
-                adapter.modifyData(fRTitles, fRImageUrls, fRIDs, fRStatus, fRIndicators);
+                List<RecipeModel> recipeList = new ArrayList<>();
+                for(FavouriteRecipe recipe: favouriteRecipes){
+                    RecipeModel r = new RecipeModel(recipe.getId(),recipe.getTitle(), JsonData2Recipe.subImageUrl1+recipe.getId()+JsonData2Recipe.subImageUrl2, 0, true, null);
+                    recipeList.add(r);
+                }
+                adapter.modifyData(recipeList);
             }
         });
-
     }
 
 
 
-    private void inputData(List<FavouriteRecipe> fRs){
-        fRTitles = new ArrayList<>();
-        fRIDs = new ArrayList<>();
-        fRImageUrls = new ArrayList<>();
-        fRStatus = new ArrayList<>();
-        fRIndicators = new ArrayList<>();
-
-        for(int i=0; i<fRs.size();i++){
-            FavouriteRecipe fR = fRs.get(i);
-            fRTitles.add(fR.getTitle());
-            fRIDs.add(fR.getId());
-            fRImageUrls.add(subImageUrl1+fR.getId()+subImageUrl2);
-            fRStatus.add(0);
-            fRIndicators.add(true);
-        }
-        fRTitles.add(null);
-        fRIDs.add(null);
-        fRImageUrls.add(null);
-        fRStatus.add(2);
-    }
 }

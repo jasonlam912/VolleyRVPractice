@@ -32,6 +32,8 @@ import com.example.volleyrvpractice.FavouriteRecipe.FavouriteRecipeActivity;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeViewModel;
 import com.example.volleyrvpractice.Network.NetworkManager;
+import com.example.volleyrvpractice.Recipe.RecipeModel;
+import com.example.volleyrvpractice.Recipe.RecipeViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
@@ -47,28 +49,14 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rv;
     RecipeAdapter adapter;
     LinearLayoutManager manager;
-    List<String> recipe_title = new ArrayList<>();
-    List<String> image_link = new ArrayList<>();
-    List<String> recipe_id = new ArrayList<>();
-    List<Integer> recipe_status = new ArrayList<>();
-    List<Boolean> fRIndicators = new ArrayList<>();
-    private FavouriteRecipeViewModel fRViewModel;
-    private List<FavouriteRecipe> tempFRs;
+
+    private RecipeViewModel recipeViewModel;
 
     private DrawerLayout drawerLayout;
     private NavigationView nv;
     private Toolbar toolbar;
-    static boolean loadmore=true;
     static boolean searching=false;
     static String searchString;
-
-
-
-    private String subSearchUrl1 = "https://api.spoonacular.com/recipes/complexSearch?number=10&apiKey=";
-    private String subSearchUrl1_1 = "&query=";
-    private String subSearchUrl2 = "&offset=";
-    private String subImageUrl1 = "https://spoonacular.com/recipeImages/";
-    private String subImageUrl2 = "-556x370.jpg";
     //volley things
     private ProgressBar loadingRecipePB;
     private SwipeRefreshLayout swipeRecipeRVContainer;
@@ -83,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         swipeRecipeRVContainer = findViewById(R.id.swipe_recipe_rv_container);
 
         rv = findViewById(R.id.recipe_rv);
-        adapter = new RecipeAdapter(this, recipe_title, image_link, recipe_id,recipe_status,fRIndicators);
+        adapter = new RecipeAdapter(this, new ArrayList<RecipeModel>());
         rv.setAdapter(adapter);
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             manager = new LinearLayoutManager(this);
@@ -97,35 +85,46 @@ public class MainActivity extends AppCompatActivity {
                                        super.onScrolled(recyclerView, dx, dy);
 
                                        int lastVisiblePosition = manager.findLastVisibleItemPosition();
-
-                                       if (loadmore&&lastVisiblePosition == recipe_id.size()-1) {
-
-                                           loadmore = false;
-                                           if(searching){
-                                               loadSearchList(recipe_id.size(),searchString);
-                                           }else{
-                                               loadRandomList(recipe_id.size());
-                                           }
+                                       //Log.d("lastPos", Boolean.toString(lastVisiblePosition == recipeViewModel.getData().getValue().size()-1));
+                                       if (!recipeViewModel.isLoading.getValue()&&lastVisiblePosition == recipeViewModel.getData().getValue().size()-1) {
+                                           //Log.d("isSearch", Boolean.toString(recipeViewModel.isSearch));
+                                           recipeViewModel.putRecipe(MainActivity.this, searchString);
                                        }
                                    }
                                }
         );
-        fRViewModel = new ViewModelProvider(this).get(FavouriteRecipeViewModel.class);
-        Observer<List<FavouriteRecipe>> observer = new Observer<List<FavouriteRecipe>>() {
+
+        recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+        recipeViewModel.getData().observe(this, new Observer<List<RecipeModel>>() {
             @Override
-            public void onChanged(List<FavouriteRecipe> favouriteRecipes) {
-                tempFRs = favouriteRecipes;
-                loadRandomList(0);
-                fRViewModel.getAll().removeObserver(this);
+            public void onChanged(List<RecipeModel> recipeModels) {
+                adapter.modifyData(recipeModels);
             }
-        };
-        fRViewModel.getAll().observe(this, observer);
+        });
+
         swipeRecipeRVContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadRandomList(0);
+                recipeViewModel.resetData(MainActivity.this);
+                recipeViewModel.putRandomRecipe(MainActivity.this);
             }
         });
+
+        recipeViewModel.isLoading.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                swipeRecipeRVContainer.setRefreshing(aBoolean);
+                if(aBoolean){
+                    loadingRecipePB.setVisibility(View.VISIBLE);
+                }else{
+                    loadingRecipePB.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        if(recipeViewModel.getData().getValue().size()==2){
+            recipeViewModel.putRandomRecipe(MainActivity.this);
+        }
     }
 
     @Override
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 searchString=query;
                 searching = true;
                 Log.d("onQueryTextSubmit", query);
-                loadSearchList(0,query);
+                recipeViewModel.putSearchRecipe(MainActivity.this, query);
                 return true;
             }
 
@@ -191,166 +190,10 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId()==R.id.refresh_recipe_button){
             searching = false;
             loadingRecipePB.setVisibility(View.VISIBLE);
-            loadRandomList(0);
+            recipeViewModel.resetData(this);
+            recipeViewModel.putRandomRecipe(MainActivity.this);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private void loadSearchList(final int offset, String query){
-        if(offset==0){
-            loadingRecipePB.setVisibility(View.VISIBLE);
-        }
-        String url = subSearchUrl1+ getResources().getString(R.string.apiKeyUsing)+subSearchUrl1_1+URLEncoder.encode(query)+subSearchUrl2+offset;
-        Log.d("loadSearchList", url);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            addSearchList(offset, response);
-                            Log.d("onResponse",response.toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                    }
-                });
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(50000,5,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        NetworkManager.getInstance(this.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
-    }
-
-    private void addSearchList(int offset, JSONObject response) throws JSONException {
-        JSONArray resultsArray = response.getJSONArray("results");
-        if(offset==0){
-            initializeData();
-            addPaddingItem();
-        }else{
-            deleteLastItem();
-        }
-
-        for(int i =0; i<resultsArray.length();i++){
-            JSONObject recipeData = (JSONObject) resultsArray.get(i);
-            recipe_id.add(recipeData.getString("id"));
-            recipe_title.add(recipeData.getString("title"));
-            image_link.add(subImageUrl1+recipeData.getString("id")+subImageUrl2);
-            recipe_status.add(0);
-            fRIndicators.add(checkIdInsideFRList(recipeData.getString("id")));
-        }
-
-        if(resultsArray.length()==0){
-            addEndItem();
-            loadmore=false;
-        }else{
-            addLoadItem();
-            loadmore=true;
-        }
-        adapter.modifyData(recipe_title,image_link,recipe_id,recipe_status, fRIndicators);
-        loadingRecipePB.setVisibility(View.INVISIBLE);
-        Log.d("fRIndicators",fRIndicators.toString());
-    }
-
-    private void initializeData(){
-        recipe_title = new ArrayList<>();
-        recipe_id = new ArrayList<>();
-        image_link = new ArrayList<>();
-        recipe_status = new ArrayList<>();
-        fRIndicators = new ArrayList<>();
-    }
-
-    private void addPaddingItem(){
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-            recipe_status.add(3); recipe_title.add(null); recipe_id.add(null); image_link.add(null); fRIndicators.add(null);
-            recipe_status.add(3); recipe_title.add(null); recipe_id.add(null); image_link.add(null); fRIndicators.add(null);
-        }else{
-            recipe_status.add(3); recipe_title.add(null); recipe_id.add(null); image_link.add(null); fRIndicators.add(null);
-        }
-
-    }
-
-    private void addEndItem(){
-        recipe_status.add(2); recipe_title.add(null); recipe_id.add(null); image_link.add(null); fRIndicators.add(null);
-    }
-
-    private void addLoadItem(){
-        recipe_status.add(1); recipe_title.add(null); recipe_id.add(null); image_link.add(null); fRIndicators.add(null);
-    }
-
-    private void deleteLastItem(){
-        recipe_status.remove(recipe_status.size()-1); recipe_title.remove(recipe_title.size()-1);
-        recipe_id.remove(recipe_id.size()-1); image_link.remove(image_link.size()-1);
-        fRIndicators.remove(fRIndicators.size()-1);
-    }
-
-    private void loadRandomList(final Integer lastIndex){
-
-        String url = "https://api.spoonacular.com/recipes/random?apiKey="+getResources().getString(R.string.apiKeyUsing)+"&number=10";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            addRandomList(lastIndex,response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        error.printStackTrace();
-                    }
-                });
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(50000,5,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        NetworkManager.getInstance(this.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
-    }
-
-    private void addRandomList(int offset, JSONObject response) throws JSONException {
-        JSONArray recipesArray = response.getJSONArray("recipes");
-        if(offset==0){
-            initializeData();
-            addPaddingItem();
-        }else{
-            deleteLastItem();
-        }
-
-        for(int i =0; i<recipesArray.length();i++){
-            JSONObject recipeData = (JSONObject) recipesArray.get(i);
-            recipe_id.add(recipeData.getString("id"));
-            recipe_title.add(recipeData.getString("title"));
-            image_link.add(subImageUrl1+recipeData.getString("id")+subImageUrl2);
-            recipe_status.add(0);
-            fRIndicators.add(checkIdInsideFRList(recipeData.getString("id")));
-        }
-        Log.d("fRIndicators",fRIndicators.toString());
-
-        if(recipesArray.length()==0){
-            addEndItem();
-            loadmore=false;
-        }else{
-            addLoadItem();
-            loadmore=true;
-        }
-        adapter.modifyData(recipe_title,image_link,recipe_id,recipe_status, fRIndicators);
-        loadingRecipePB.setVisibility(View.INVISIBLE);
-        swipeRecipeRVContainer.setRefreshing(false);
-    }
-
-    private boolean checkIdInsideFRList(String recipe_id){
-        for(int j=0; j<tempFRs.size(); j++){
-            if(recipe_id.equals(tempFRs.get(j).getId())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }

@@ -1,10 +1,25 @@
 package com.example.volleyrvpractice.Recipe;
 
+import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe;
+import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeRepository;
 import com.example.volleyrvpractice.Network.CallbackListener;
 import com.example.volleyrvpractice.Network.NetworkManager;
 
@@ -16,58 +31,97 @@ import java.util.List;
 
 public class RecipeViewModel extends ViewModel {
     private MutableLiveData<List<RecipeModel>> data;
+    private List<CustomTarget<Bitmap>> foodImageRequestList;
+    public Boolean isSearch;
+    public MutableLiveData<Boolean> isLoading;
+
 
     public RecipeViewModel() {
         this.data = new MutableLiveData<>();
         this.data.setValue(new ArrayList<RecipeModel>());
+        this.isSearch = false;
+        this.isLoading = new MutableLiveData<>();
+        this.isLoading.setValue(false);
+        this.foodImageRequestList = new ArrayList<>();
         addPaddingItem();
         addPaddingItem();
     }
 
-    public void resetData(){
+    public void resetData(Context ct){
         this.data.setValue(new ArrayList<RecipeModel>());
+        for(CustomTarget<Bitmap> request:foodImageRequestList){
+            Glide.with(ct).clear(request);
+        }
         addPaddingItem();
         addPaddingItem();
     }
 
-    public void putRandomRecipe(Context ct){
+    public MutableLiveData<List<RecipeModel>> getData(){
+        return data;
+    }
+
+    public void putRandomRecipe(final Context ct){
+        isLoading.setValue(true);
+        if(isSearch){
+            resetData(ct);
+            isSearch = !isSearch;
+        }
         NetworkManager.getInstance(ct).getRandomRecipe(new CallbackListener() {
             @Override
             public void getResult(JSONObject jsonObject) throws JSONException {
+
                 deleteLastItem();
                 List<RecipeModel> list = data.getValue();
-                List<RecipeModel> newList = JsonData2Recipe.jsonObject2Recipe(jsonObject);
+                //Log.d("isNull", Boolean.toString(allFRList.getValue()==null));
+                List<RecipeModel> newList = JsonData2Recipe.jsonObject2RandomRecipe(jsonObject,new ArrayList<FavouriteRecipe>());
                 list.addAll(newList);
+                loadFoodImage(list, ct);
                 data.setValue(list);
                 if(newList.size()==0){
                     addEndItem();
                 }else{
                     addLoadingItem();
                 }
+                isLoading.setValue(false);
             }
         });
     }
 
-    public void putSearchRecipe(Context ct, String query, int offset){
-        NetworkManager.getInstance(ct).getSearchRecipe(query, offset, new CallbackListener() {
+    public void putSearchRecipe(final Context ct, String query){
+        isLoading.setValue(true);
+        if(!isSearch){
+            resetData(ct);
+            isSearch = !isSearch;
+        }
+        NetworkManager.getInstance(ct).getSearchRecipe(query, data.getValue().size()-2, new CallbackListener() {
             @Override
             public void getResult(JSONObject jsonObject) throws JSONException {
                 deleteLastItem();
                 List<RecipeModel> list = data.getValue();
-                List<RecipeModel> newList = JsonData2Recipe.jsonObject2Recipe(jsonObject);
+                List<RecipeModel> newList = JsonData2Recipe.jsonObject2SearchRecipe(jsonObject, new ArrayList<FavouriteRecipe>());
                 list.addAll(newList);
+                loadFoodImage(list, ct);
                 data.setValue(list);
                 if(newList.size()==0){
                     addEndItem();
                 }else{
                     addLoadingItem();
                 }
+                isLoading.setValue(false);
             }
         });
     }
 
+    public void putRecipe(Context ct, String query){
+        if(isSearch){
+            putSearchRecipe(ct, query);
+        }else{
+            putRandomRecipe(ct);
+        }
+    }
+
     public void addPaddingItem(){
-        RecipeModel recipe = new RecipeModel(null,null,null,3, true);
+        RecipeModel recipe = new RecipeModel(null,null,null,3, true, null);
         this.data.getValue().add(recipe);
     }
 
@@ -79,13 +133,39 @@ public class RecipeViewModel extends ViewModel {
 
     public void addLoadingItem(){
         List<RecipeModel> list = this.data.getValue();
-        list.add(new RecipeModel(null,null,null,1, true));
+        list.add(new RecipeModel(null,null,null,1, true, null));
         this.data.setValue(list);
     }
 
     public void addEndItem(){
         List<RecipeModel> list = this.data.getValue();
-        list.add(new RecipeModel(null,null,null,2, true));
+        list.add(new RecipeModel(null,null,null,2, true, null));
         this.data.setValue(list);
+    }
+
+    public void loadFoodImage(List<RecipeModel> list, Context ct){
+        for(int i=0; i<list.size();i++){
+            //Log.d("boolean geresult", Boolean.toString(list.get(i).getStatusForDisplay().equals(0)&&list.get(i).getRecipeIamge()==null));
+            if(list.get(i).getStatusForDisplay().equals(0)&&list.get(i).getRecipeIamge()==null){
+                final int finalI = i;
+                //Log.d("url",list.get(i).getRecipeImageUrl() );
+                CustomTarget<Bitmap> request = Glide.with(ct).asBitmap().load(list.get(i).getRecipeImageUrl()).diskCacheStrategy(DiskCacheStrategy.NONE).into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        //Log.d("onResourceReady",resource.toString());
+
+                        List<RecipeModel> tempList = data.getValue();
+                        tempList.get(finalI).setRecipeIamge(resource);
+                        data.setValue(tempList);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
+                foodImageRequestList.add(request);
+            }
+        }
     }
 }

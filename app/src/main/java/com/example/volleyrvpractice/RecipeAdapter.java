@@ -3,6 +3,9 @@ package com.example.volleyrvpractice;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -30,6 +34,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeViewModel;
+import com.example.volleyrvpractice.Recipe.RecipeModel;
 import com.google.android.material.shape.RoundedCornerTreatment;
 
 import java.util.ArrayList;
@@ -37,31 +42,19 @@ import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter {
 
-    private List<String> recipe_title;
-    private List<String> image_link;
-    private List<String> recipe_id;
-    private List<Integer> recipe_status;
+    private List<RecipeModel> recipeData;
     private Context ct;
     private FavouriteRecipeViewModel fRViewModel;
-    private List<Boolean> fRIndicators;
 
-    public RecipeAdapter(Context ct, List<String> recipe_title, List<String> image_link, List<String> recipe_id,List<Integer> recipe_status, List<Boolean> fRIndicators){
+
+    public RecipeAdapter(Context ct, List<RecipeModel> recipeData){
         this.ct = ct;
-        this.recipe_title = recipe_title;
-        this.image_link = image_link;
-        this.recipe_id = recipe_id;
-        this.recipe_status = recipe_status;
-        this.fRIndicators = fRIndicators;
-        Log.d("fRIndicators",fRIndicators.toString());
+        this.recipeData = recipeData;
         fRViewModel = ViewModelProviders.of((FragmentActivity)ct).get(FavouriteRecipeViewModel.class);
     }
 
-    public void modifyData(List<String> recipe_title,List<String> image_link,List<String> recipe_id, List<Integer> recipe_status, List<Boolean> fRIndicators){
-        this.recipe_title = recipe_title;
-        this.image_link = image_link;
-        this.recipe_id = recipe_id;
-        this.recipe_status = recipe_status;
-        this.fRIndicators = fRIndicators;
+    public void modifyData(List<RecipeModel> recipeData){
+        this.recipeData = recipeData;
         this.notifyDataSetChanged();
     }
 
@@ -91,30 +84,31 @@ public class RecipeAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int i) {
-        switch (recipe_status.get(i)){
+        switch (recipeData.get(i).getStatusForDisplay()){
             case 0:
-                ((RecipeAdapter.MyViewHolder)holder).titleText.setText(recipe_title.get(i));
-                Glide.with(ct)
-                        .load(image_link.get(i))
+                ((RecipeAdapter.MyViewHolder)holder).titleText.setText(recipeData.get(i).getRecipeTitle());
+                ((RecipeAdapter.MyViewHolder)holder).recipeImageView.setImageBitmap(recipeData.get(i).getRecipeIamge());
+                /*Glide.with(ct)
+                        .load(recipeData.get(i).getRecipeImageUrl())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(((RecipeAdapter.MyViewHolder)holder).recipeImageView);
+                        .into(((RecipeAdapter.MyViewHolder)holder).recipeImageView);*/
+
+
                 ((RecipeAdapter.MyViewHolder)holder).favouriteButton.setOnCheckedChangeListener(null);
-                ((RecipeAdapter.MyViewHolder)holder).favouriteButton.setChecked(fRIndicators.get(i));
+                ((RecipeAdapter.MyViewHolder)holder).favouriteButton.setChecked(recipeData.get(i).isfRIndicator());
                 ((RecipeAdapter.MyViewHolder)holder).favouriteButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         Log.d("onCheckedChanged", Boolean.toString(isChecked));
                         if(isChecked)
                         {
-                            final FavouriteRecipe fR = new FavouriteRecipe(recipe_id.get(i),recipe_title.get(i));
-                            fR.setPrimaryKey(Integer.valueOf(recipe_id.get(i)));
+                            final FavouriteRecipe fR = new FavouriteRecipe(recipeData.get(i).getRecipeId(),recipeData.get(i).getRecipeTitle());
+                            fR.setPrimaryKey(Integer.valueOf(recipeData.get(i).getRecipeId()));
                             fRViewModel.insert(fR);
-                            fRIndicators.set(i,true);
                         }else{
-                            FavouriteRecipe fR = new FavouriteRecipe(recipe_id.get(i),recipe_title.get(i));
-                            fR.setPrimaryKey(Integer.valueOf(recipe_id.get(i)));
+                            FavouriteRecipe fR = new FavouriteRecipe(recipeData.get(i).getRecipeId(),recipeData.get(i).getRecipeTitle());
+                            fR.setPrimaryKey(Integer.valueOf(recipeData.get(i).getRecipeId()));
                             fRViewModel.delete(fR);
-                            fRIndicators.set(i,false);
                         }
                         //notifyItemChanged(i);
                         //modifyData(recipe_title,image_link,recipe_id,recipe_status,fRIndicators);
@@ -129,12 +123,12 @@ public class RecipeAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
 
-        return recipe_status.get(position);
+        return recipeData.get(position).getStatusForDisplay();
     }
 
     @Override
     public int getItemCount() {
-        return recipe_title.size();
+        return recipeData.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -152,8 +146,8 @@ public class RecipeAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ct, RecipeActivity.class);
-                    intent.putExtra("id", recipe_id.get(getAdapterPosition()));
-                    intent.putExtra("title", recipe_title.get(getAdapterPosition()));
+                    intent.putExtra("id", recipeData.get(getAdapterPosition()).getRecipeId());
+                    intent.putExtra("title", recipeData.get(getAdapterPosition()).getRecipeTitle());
                     intent.putExtra("favourite_recipe", favouriteButton.isChecked());
                     ct.startActivity(intent);
                 }
