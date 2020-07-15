@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -67,6 +68,7 @@ public class RecipeActivity extends AppCompatActivity {
     //Data Object-----------------------------------------------------------------------------------
     private String recipe_id;
     private String recipe_title;
+    private Bitmap recipe_image;
     private boolean is_favourite_recipe;
     private FavouriteRecipeViewModel fRViewModel;
     //Data Object-----------------------------------------------------------------------------------
@@ -80,6 +82,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         recipe_id = getIntent().getStringExtra("id");
         recipe_title = getIntent().getStringExtra("title");
+        recipe_image = getIntent().getParcelableExtra("recipe_image");
         initializeToolBar();
         is_favourite_recipe = getIntent().getBooleanExtra("favourite_recipe",true);
         //Log.d("onCreate",recipe_id);
@@ -124,6 +127,7 @@ public class RecipeActivity extends AppCompatActivity {
         recipeTitleTextView = findViewById(R.id.recipe_title);
         recipeImageView = findViewById(R.id.recipe_image);
         recipeTitleTextView.setText(recipe_title);
+        //recipeImageView.setImageBitmap(recipe_image);
         Glide.with(this).load(subImageUrl1+recipe_id+subImageUrl2).diskCacheStrategy(DiskCacheStrategy.ALL).into(recipeImageView);
         Toolbar toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);

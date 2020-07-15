@@ -20,4 +20,13 @@
     <color name="translucent_scrim_top_center">#0C000000</color>
     <color name="translucent_scrim_bottom">#2A000000</color>
     <color name="translucent_scrim_bottom_center">#0D000000</color>
+
+    <color name="colorGradientStart">#518553</color>
+    <color name="colorGradientEnd">#314E32</color>
+
+    <color name="colorActionUp">#00000000</color>
+    <color name="colorActionDown">#00000000</color>
+
+    <color name="colorShadowStart">#00547A</color>
+    <color name="colorShadowEnd">#004FC3F7</color>
 </resources>

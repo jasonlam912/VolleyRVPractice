@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppThemeMain);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeDrawerLayout();
@@ -113,11 +114,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 swipeRecipeRVContainer.setRefreshing(aBoolean);
-                if(aBoolean){
+                /*if(aBoolean){
                     loadingRecipePB.setVisibility(View.VISIBLE);
                 }else{
                     loadingRecipePB.setVisibility(View.INVISIBLE);
-                }
+                }*/
             }
         });
 
@@ -186,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.refresh_recipe_button){
-            loadingRecipePB.setVisibility(View.VISIBLE);
             recipeViewModel.resetData(this);
             recipeViewModel.putRandomRecipe(MainActivity.this);
             return true;

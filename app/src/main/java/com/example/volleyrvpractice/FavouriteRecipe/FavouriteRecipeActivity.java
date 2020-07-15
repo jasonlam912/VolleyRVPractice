@@ -1,16 +1,23 @@
 package com.example.volleyrvpractice.FavouriteRecipe;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeViewModel;
 import com.example.volleyrvpractice.R;
@@ -55,13 +62,16 @@ public class FavouriteRecipeActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<FavouriteRecipe> favouriteRecipes) {
                 List<RecipeModel> recipeList = new ArrayList<>();
-                for(FavouriteRecipe recipe: favouriteRecipes){
-                    RecipeModel r = new RecipeModel(recipe.getId(),recipe.getTitle(), JsonData2Recipe.subImageUrl1+recipe.getId()+JsonData2Recipe.subImageUrl2, 0, true, null);
+                for(int i=0; i<favouriteRecipes.size();i++){
+                    FavouriteRecipe recipe = favouriteRecipes.get(i);
+                    String url = JsonData2Recipe.subImageUrl1+recipe.getId()+JsonData2Recipe.subImageUrl2;
+                    RecipeModel r = new RecipeModel(recipe.getId(),recipe.getTitle(), url, 0, true, null);
                     recipeList.add(r);
                 }
                 adapter.modifyData(recipeList);
             }
         });
+
     }
 
 

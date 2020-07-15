@@ -155,7 +155,7 @@ public class RecipeViewModel extends ViewModel {
                         //Log.d("onResourceReady",resource.toString());
 
                         List<RecipeModel> tempList = data.getValue();
-                        tempList.get(finalI).setRecipeIamge(resource);
+                        tempList.get(finalI).setRecipeImage(resource);
                         data.setValue(tempList);
                     }
 

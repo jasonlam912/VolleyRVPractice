@@ -1,10 +1,12 @@
 package com.example.volleyrvpractice.FavouriteRecipeModel;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
@@ -31,4 +33,5 @@ public class FavouriteRecipeViewModel extends AndroidViewModel {
     public LiveData<List<FavouriteRecipe>> getAll(){
         return allList;
     }
+
 }

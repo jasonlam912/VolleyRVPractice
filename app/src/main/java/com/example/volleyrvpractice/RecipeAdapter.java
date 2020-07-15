@@ -1,5 +1,6 @@
 package com.example.volleyrvpractice;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,7 +21,9 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.util.Pair;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -58,6 +61,9 @@ public class RecipeAdapter extends RecyclerView.Adapter {
         this.notifyDataSetChanged();
     }
 
+    public List<RecipeModel> getRecipeData(){
+        return recipeData;
+    }
 
 
     @NonNull
@@ -102,11 +108,13 @@ public class RecipeAdapter extends RecyclerView.Adapter {
                         Log.d("onCheckedChanged", Boolean.toString(isChecked));
                         if(isChecked)
                         {
-                            final FavouriteRecipe fR = new FavouriteRecipe(recipeData.get(i).getRecipeId(),recipeData.get(i).getRecipeTitle());
+                            final FavouriteRecipe fR = new FavouriteRecipe(
+                                    recipeData.get(i).getRecipeId(),recipeData.get(i).getRecipeTitle());
                             fR.setPrimaryKey(Integer.valueOf(recipeData.get(i).getRecipeId()));
                             fRViewModel.insert(fR);
                         }else{
-                            FavouriteRecipe fR = new FavouriteRecipe(recipeData.get(i).getRecipeId(),recipeData.get(i).getRecipeTitle());
+                            FavouriteRecipe fR = new FavouriteRecipe(
+                                    recipeData.get(i).getRecipeId(),recipeData.get(i).getRecipeTitle());
                             fR.setPrimaryKey(Integer.valueOf(recipeData.get(i).getRecipeId()));
                             fRViewModel.delete(fR);
                         }
@@ -146,10 +154,12 @@ public class RecipeAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ct, RecipeActivity.class);
+                    ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)ct, new Pair<View, String>(recipeImageView, recipeImageView.getTransitionName()));
                     intent.putExtra("id", recipeData.get(getAdapterPosition()).getRecipeId());
                     intent.putExtra("title", recipeData.get(getAdapterPosition()).getRecipeTitle());
                     intent.putExtra("favourite_recipe", favouriteButton.isChecked());
-                    ct.startActivity(intent);
+                    //intent.putExtra("recipe_image", recipeData.get(getAdapterPosition()).getRecipeIamge());
+                    ct.startActivity(intent, optionsCompat.toBundle());
                 }
             });
             favouriteButton = itemView.findViewById(R.id.favourite_toggle_button);

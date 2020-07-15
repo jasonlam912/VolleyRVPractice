@@ -70,7 +70,7 @@ public class RecipeModel {
         this.fRIndicator = fRIndicator;
     }
 
-    public void setRecipeIamge(Bitmap recipeIamge) {
+    public void setRecipeImage(Bitmap recipeIamge) {
         this.recipeIamge = recipeIamge;
     }
 }

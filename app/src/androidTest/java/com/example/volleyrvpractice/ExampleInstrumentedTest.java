@@ -28,6 +28,6 @@ public class ExampleInstrumentedTest {
     @Test
     public void a(){
         RecipeActivity recipeActivity = new RecipeActivity();
-        recipeActivity.loadRecipeDetails();
+        //recipeActivity.loadRecipeDetails();
     }
 }
