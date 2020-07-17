@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         orientation = getResources().getConfiguration().orientation;
         loadingRecipePB = findViewById(R.id.loading_recipe_progress_bar);
         loadingRecipePB.setVisibility(View.INVISIBLE);
+
         swipeRecipeRVContainer = findViewById(R.id.swipe_recipe_rv_container);
 
         rv = findViewById(R.id.recipe_rv);
@@ -141,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                 recipeViewModel.putSearchRecipe(MainActivity.this, query);
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;

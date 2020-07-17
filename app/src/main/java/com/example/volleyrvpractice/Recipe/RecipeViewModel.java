@@ -1,5 +1,6 @@
 package com.example.volleyrvpractice.Recipe;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,6 +22,8 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeRepository;
 import com.example.volleyrvpractice.Network.CallbackListener;
+import com.example.volleyrvpractice.Network.GlideCallbackListener;
+import com.example.volleyrvpractice.Network.GlideManager;
 import com.example.volleyrvpractice.Network.NetworkManager;
 
 import org.json.JSONException;
@@ -61,6 +64,7 @@ public class RecipeViewModel extends ViewModel {
     }
 
     public void putRandomRecipe(final Context ct){
+        Log.d("size", Integer.toString(data.getValue().size()));
         isLoading.setValue(true);
         if(isSearch){
             resetData(ct);
@@ -149,22 +153,26 @@ public class RecipeViewModel extends ViewModel {
             if(list.get(i).getStatusForDisplay().equals(0)&&list.get(i).getRecipeIamge()==null){
                 final int finalI = i;
                 //Log.d("url",list.get(i).getRecipeImageUrl() );
-                CustomTarget<Bitmap> request = Glide.with(ct).asBitmap().load(list.get(i).getRecipeImageUrl()).diskCacheStrategy(DiskCacheStrategy.NONE).into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        //Log.d("onResourceReady",resource.toString());
+                if(((Activity)ct).isDestroyed()){
+                    Log.d("nullct", "hello");
+                }else{
+                    CustomTarget<Bitmap> request = GlideManager.loadImage(ct, list.get(i).getRecipeImageUrl(), i, new GlideCallbackListener() {
+                        @Override
+                        public void getBitmap(Bitmap resource, int index) {
+                            //Log.d("getBitmap", Boolean.toString(resource==null));
 
-                        List<RecipeModel> tempList = data.getValue();
-                        tempList.get(finalI).setRecipeImage(resource);
-                        data.setValue(tempList);
-                    }
+                            List<RecipeModel> templist = data.getValue();
+                            Bitmap temp = resource.copy(resource.getConfig(), true);
+                            templist.get(index).setRecipeImage(temp);
+                            data.postValue(templist);
+                        }
+                    });
+                    foodImageRequestList.add(request);
+                //list.get(i).setRecipeImage(Glide.with(ct).asBitmap().load(list.get(i).getRecipeImageUrl()).submit(556,370).get());
+                }
 
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
 
-                    }
-                });
-                foodImageRequestList.add(request);
+
             }
         }
     }

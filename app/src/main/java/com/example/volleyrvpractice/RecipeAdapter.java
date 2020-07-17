@@ -93,7 +93,12 @@ public class RecipeAdapter extends RecyclerView.Adapter {
         switch (recipeData.get(i).getStatusForDisplay()){
             case 0:
                 ((RecipeAdapter.MyViewHolder)holder).titleText.setText(recipeData.get(i).getRecipeTitle());
-                ((RecipeAdapter.MyViewHolder)holder).recipeImageView.setImageBitmap(recipeData.get(i).getRecipeIamge());
+                if(recipeData.get(i).getRecipeIamge()!=null){
+                    ((RecipeAdapter.MyViewHolder)holder).recipeImageView.setImageBitmap(recipeData.get(i).getRecipeIamge());
+                }else{
+                    Glide.with(ct).load(recipeData.get(i).getRecipeImageUrl()).diskCacheStrategy(DiskCacheStrategy.ALL).into(((MyViewHolder)holder).recipeImageView);
+                }
+
                 /*Glide.with(ct)
                         .load(recipeData.get(i).getRecipeImageUrl())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -154,7 +159,8 @@ public class RecipeAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ct, RecipeActivity.class);
-                    ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)ct, new Pair<View, String>(recipeImageView, recipeImageView.getTransitionName()));
+                    Pair<View, String> p1 = Pair.create((View)recipeImageView, recipeImageView.getTransitionName());
+                    ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)ct, p1);
                     intent.putExtra("id", recipeData.get(getAdapterPosition()).getRecipeId());
                     intent.putExtra("title", recipeData.get(getAdapterPosition()).getRecipeTitle());
                     intent.putExtra("favourite_recipe", favouriteButton.isChecked());

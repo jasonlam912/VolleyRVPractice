@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.volleyrvpractice.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,13 +24,14 @@ public class NetworkManager {
 
     private static final String randomRecipeUrl = "https://api.spoonacular.com/recipes/random?number=10&apiKey=";
     private static final String searchRecipeUrl1 = "https://api.spoonacular.com/recipes/complexSearch?number=10&apiKey=";
-    private static final String api = "22490cb12d2d45c7aafe40f28b4aa804";
+    private static String api;
     private static final String searchRecipeUrl2 = "&query=";
     private static final String searchRecipeUrl3 = "&offset=";
 
 
     private NetworkManager(Context context ) {
         ctx = context ;
+        api = ctx.getResources().getString(R.string.apiKeyUsing);
         requestQueue = getRequestQueue ();
 
         imageLoader = new ImageLoader ( requestQueue ,
