@@ -10,9 +10,11 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+
 public class FavouriteRecipeRepository {
     private FavouriteRecipeDao fRDao;
-    private LiveData<List<FavouriteRecipe>> allFR;
+    private Observable<List<FavouriteRecipe>> allFR;
 
     public FavouriteRecipeRepository(Application application) {
         FavouriteRecipeDatabase db = FavouriteRecipeDatabase.getInstance(application);
@@ -26,11 +28,29 @@ public class FavouriteRecipeRepository {
     public void insert(FavouriteRecipe favouriteRecipe){
         new InsertFRAsyncTasks(fRDao).execute(favouriteRecipe);
     }
-    public LiveData<List<FavouriteRecipe>> getAllFR(){
+    public Observable<List<FavouriteRecipe>> getAllFR(){
         return allFR;
     }
     public void deleteAllFR(){
         new DeleteAllFRsAsyncTasks(fRDao).execute();
+    }
+
+    public void deleteWithKey(int primaryKey){
+        new DeleteFRWithKeyAsyncTasks(fRDao).execute(primaryKey);
+
+    }
+
+    private class DeleteFRWithKeyAsyncTasks extends AsyncTask<Integer, Void, Void>{
+        private FavouriteRecipeDao fRDao;
+        private DeleteFRWithKeyAsyncTasks(FavouriteRecipeDao fRDao) {
+            this.fRDao = fRDao;
+        }
+
+        @Override
+        protected Void doInBackground(Integer... key) {
+            fRDao.deleteFRwithKey(key[0]);
+            return null;
+        }
     }
 
     private class DeleteFRAsyncTasks extends AsyncTask<FavouriteRecipe, Void, Void>{

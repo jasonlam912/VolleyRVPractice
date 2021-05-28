@@ -3,6 +3,7 @@ package com.example.volleyrvpractice.ViewClass;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -11,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.volleyrvpractice.R;
 
+import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_UP;
 import static android.view.MotionEvent.AXIS_SIZE;
@@ -79,13 +81,13 @@ public class CustomRowView extends ConstraintLayout {
                 break;
             }
             case ACTION_UP:
-        case AXIS_SIZE: {
-            this.startAnimation(animationUp);
-            colorUpAnimator.start();
-            break;
+            case ACTION_CANCEL:{
+                this.startAnimation(animationUp);
+                colorUpAnimator.start();
+                break;
+            }
         }
-    }
-        //Log.d("getAction",Integer.toString(event.getAction()));
+        //Log.d("getAction",Integer.toString(event.getActionMasked()));
         return true;
     }
 }

@@ -11,9 +11,11 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+
 public class FavouriteRecipeViewModel extends AndroidViewModel {
     private FavouriteRecipeRepository repository;
-    private LiveData<List<FavouriteRecipe>> allList;
+    private Observable<List<FavouriteRecipe>> allList;
 
     public FavouriteRecipeViewModel(@NonNull Application application) {
         super(application);
@@ -30,8 +32,14 @@ public class FavouriteRecipeViewModel extends AndroidViewModel {
     public void deleteAll(){
         repository.deleteAllFR();
     }
-    public LiveData<List<FavouriteRecipe>> getAll(){
+
+    public void deleteWithKey(int key) {
+        repository.deleteWithKey(key);
+    }
+
+    public Observable<List<FavouriteRecipe>> getAll(){
         return allList;
     }
+
 
 }

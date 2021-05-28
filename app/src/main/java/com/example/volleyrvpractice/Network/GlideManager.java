@@ -17,7 +17,7 @@ import java.util.List;
 
 public class GlideManager {
     public static CustomTarget<Bitmap> loadImage(Context ct, String url, final int i, final GlideCallbackListener listener) {
-        return Glide.with(ct).asBitmap().load(url).diskCacheStrategy(DiskCacheStrategy.NONE).into(new CustomTarget<Bitmap>() {
+        return Glide.with(ct).asBitmap().load(url).diskCacheStrategy(DiskCacheStrategy.NONE).into(new CustomTarget<Bitmap>(556,370) {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 //Log.d("onResourceReady",resource.toString();
@@ -26,8 +26,8 @@ public class GlideManager {
 
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {
-
             }
+
         });
     }
 }

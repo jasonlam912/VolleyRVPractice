@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         nv = findViewById(R.id.navigation_view_drawer);
         toolbar = findViewById(R.id.toolbar2);
-        toolbar.setNavigationIcon(R.drawable.recipes);
+        //toolbar.setNavigationIcon(R.drawable.recipes);
         toolbar.setTitle("");
 
         setSupportActionBar(toolbar);

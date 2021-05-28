@@ -9,6 +9,8 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+
 @Dao
 public interface FavouriteRecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -18,5 +20,7 @@ public interface FavouriteRecipeDao {
     @Query("Delete from favourite_recipe_table")
     void deleteAllFR();
     @Query("Select * from favourite_recipe_table")
-    LiveData<List<FavouriteRecipe>> getAllFR();
+    Observable<List<FavouriteRecipe>> getAllFR();
+    @Query("Delete from favourite_recipe_table where primaryKey =:primaryKey")
+    void deleteFRwithKey(int primaryKey);
 }

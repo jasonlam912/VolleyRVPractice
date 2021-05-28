@@ -132,7 +132,7 @@ public class RecipeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(recipe_title);
     }
 
@@ -163,6 +163,11 @@ public class RecipeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -197,50 +202,6 @@ public class RecipeActivity extends AppCompatActivity {
             return fragments.size();
         }
     }
-
-    /*
-    public void loadRecipeDetails(){
-        String url = "https://api.spoonacular.com/recipes/"+recipe_id+"/information?includeNutrition=false&apiKey="+getResources().getString(R.string.apiKeyUsing);
-        Log.d("url", url);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            readIngredient(response);
-                            ingredientFragement.adapter.notifyDataSetChanged();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                    }
-                });
-        requestQueue.add(jsonObjectRequest);
-    }
-
-
-    private void readIngredient(JSONObject response) throws JSONException {
-
-        JSONArray array = response.getJSONArray("extendedIngredients");
-        for(int i=0;i<array.length();i++){
-            JSONObject ingredient = (JSONObject) array.get(i);
-            String igdImageUrl = "https://spoonacular.com/cdn/ingredients_100x100/"+ingredient.getString("image");
-            recipeData.get("ingredient_image_url").add(igdImageUrl);
-            String igdTitle = ingredient.getString("name");
-            recipeData.get("ingredient_title").add(igdTitle);
-            String igdAmountUnitTemp =  ingredient.getJSONObject("measures").getJSONObject("us").getString("unitLong")+" ";
-            String igdAmountUnit = ((igdAmountUnitTemp.trim().equals(""))?"unit":igdAmountUnitTemp);
-            String igdAmount = convertDecimalToFraction(ingredient.getDouble("amount")) + " "+igdAmountUnit;
-            recipeData.get("ingredient_amount").add(igdAmount);
-        }
-        Log.d("recipeData",recipeData.toString());
-    }
-    */
-
 
     private Bundle bundleForIngredientFragment(){
         Bundle bundle = new Bundle();

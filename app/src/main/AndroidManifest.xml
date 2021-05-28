@@ -12,12 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme2">
         <activity android:name=".FavouriteRecipe.FavouriteRecipeActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="Recipe List"
                 android:value=".MainActivity" />
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".RecipeActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppThemeRecipe">

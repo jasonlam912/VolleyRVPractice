@@ -53,8 +53,10 @@ public class RecipeViewModel extends ViewModel {
     public void resetData(Context ct){
         this.data.setValue(new ArrayList<RecipeModel>());
         for(CustomTarget<Bitmap> request:foodImageRequestList){
-            Glide.with(ct).clear(request);
-        }
+            Glide.with(ct.getApplicationContext()).clear(request);
+        };
+        Log.d("imagerequestListNo.:", Integer.toString(foodImageRequestList.size()));
+        foodImageRequestList.clear();
         addPaddingItem();
         addPaddingItem();
     }
@@ -147,29 +149,28 @@ public class RecipeViewModel extends ViewModel {
         this.data.setValue(list);
     }
 
-    public void loadFoodImage(List<RecipeModel> list, Context ct){
+    public void loadFoodImage(List<RecipeModel> list, final Context ct){
         for(int i=0; i<list.size();i++){
             //Log.d("boolean geresult", Boolean.toString(list.get(i).getStatusForDisplay().equals(0)&&list.get(i).getRecipeIamge()==null));
             if(list.get(i).getStatusForDisplay().equals(0)&&list.get(i).getRecipeIamge()==null){
                 final int finalI = i;
                 //Log.d("url",list.get(i).getRecipeImageUrl() );
-                if(((Activity)ct).isDestroyed()){
-                    Log.d("nullct", "hello");
-                }else{
-                    CustomTarget<Bitmap> request = GlideManager.loadImage(ct, list.get(i).getRecipeImageUrl(), i, new GlideCallbackListener() {
-                        @Override
-                        public void getBitmap(Bitmap resource, int index) {
-                            //Log.d("getBitmap", Boolean.toString(resource==null));
+                CustomTarget<Bitmap> request = GlideManager.loadImage(ct.getApplicationContext(), list.get(i).getRecipeImageUrl(), i, new GlideCallbackListener() {
+                    @Override
+                    public void getBitmap(Bitmap resource, int index) {
+                        //Log.d("getBitmap", Boolean.toString(resource==null));
 
-                            List<RecipeModel> templist = data.getValue();
-                            Bitmap temp = resource.copy(resource.getConfig(), true);
-                            templist.get(index).setRecipeImage(temp);
-                            data.postValue(templist);
-                        }
-                    });
-                    foodImageRequestList.add(request);
+                        List<RecipeModel> tempList = data.getValue();
+                        Bitmap temp = resource.copy(resource.getConfig(), true);
+                        tempList.get(index).setRecipeImage(temp);
+                        data.postValue(tempList);
+                        //Glide.with(ct.getApplicationContext()).clear(request);
+                    }
+
+                });
+                foodImageRequestList.add(request);
                 //list.get(i).setRecipeImage(Glide.with(ct).asBitmap().load(list.get(i).getRecipeImageUrl()).submit(556,370).get());
-                }
+
 
 
 

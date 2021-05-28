@@ -30,9 +30,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe;
@@ -92,11 +90,13 @@ public class RecipeAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int i) {
         switch (recipeData.get(i).getStatusForDisplay()){
             case 0:
-                ((RecipeAdapter.MyViewHolder)holder).titleText.setText(recipeData.get(i).getRecipeTitle());
+                MyViewHolder holder1 = (RecipeAdapter.MyViewHolder)holder;
+                holder1.titleText.setText(recipeData.get(i).getRecipeTitle());
                 if(recipeData.get(i).getRecipeIamge()!=null){
-                    ((RecipeAdapter.MyViewHolder)holder).recipeImageView.setImageBitmap(recipeData.get(i).getRecipeIamge());
+                    holder1.recipeImageView.setImageBitmap(recipeData.get(i).getRecipeIamge());
                 }else{
-                    Glide.with(ct).load(recipeData.get(i).getRecipeImageUrl()).diskCacheStrategy(DiskCacheStrategy.ALL).into(((MyViewHolder)holder).recipeImageView);
+                    holder1.recipeImageView.setImageDrawable(ct.getResources().getDrawable(R.drawable.food_demo));
+                    //Glide.with(ct).load(recipeData.get(i).getRecipeImageUrl()).diskCacheStrategy(DiskCacheStrategy.ALL).into(((MyViewHolder)holder).recipeImageView);
                 }
 
                 /*Glide.with(ct)
@@ -105,28 +105,8 @@ public class RecipeAdapter extends RecyclerView.Adapter {
                         .into(((RecipeAdapter.MyViewHolder)holder).recipeImageView);*/
 
 
-                ((RecipeAdapter.MyViewHolder)holder).favouriteButton.setOnCheckedChangeListener(null);
+                //((RecipeAdapter.MyViewHolder)holder).favouriteButton.setOnCheckedChangeListener(null);
                 ((RecipeAdapter.MyViewHolder)holder).favouriteButton.setChecked(recipeData.get(i).isfRIndicator());
-                ((RecipeAdapter.MyViewHolder)holder).favouriteButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        Log.d("onCheckedChanged", Boolean.toString(isChecked));
-                        if(isChecked)
-                        {
-                            final FavouriteRecipe fR = new FavouriteRecipe(
-                                    recipeData.get(i).getRecipeId(),recipeData.get(i).getRecipeTitle());
-                            fR.setPrimaryKey(Integer.valueOf(recipeData.get(i).getRecipeId()));
-                            fRViewModel.insert(fR);
-                        }else{
-                            FavouriteRecipe fR = new FavouriteRecipe(
-                                    recipeData.get(i).getRecipeId(),recipeData.get(i).getRecipeTitle());
-                            fR.setPrimaryKey(Integer.valueOf(recipeData.get(i).getRecipeId()));
-                            fRViewModel.delete(fR);
-                        }
-                        //notifyItemChanged(i);
-                        //modifyData(recipe_title,image_link,recipe_id,recipe_status,fRIndicators);
-                    }
-                });
             case 1:
             case 2:
             case 3:
@@ -169,7 +149,27 @@ public class RecipeAdapter extends RecyclerView.Adapter {
                 }
             });
             favouriteButton = itemView.findViewById(R.id.favourite_toggle_button);
-
+            favouriteButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Log.d("onCheckedChanged", Boolean.toString(isChecked));
+                    if(isChecked)
+                    {
+                        final FavouriteRecipe fR = new FavouriteRecipe(
+                                recipeData.get(getAdapterPosition()).getRecipeId(),
+                                recipeData.get(getAdapterPosition()).getRecipeTitle());
+                        recipeData.get(getAdapterPosition()).setfRIndicator(true);
+                        fR.setPrimaryKey(Integer.parseInt(recipeData.get(getAdapterPosition()).getRecipeId()));
+                        fRViewModel.insert(fR);
+                    }else{
+                        int key = Integer.parseInt(recipeData.get(getAdapterPosition()).getRecipeId());
+                        recipeData.get(getAdapterPosition()).setfRIndicator(false);
+                        fRViewModel.deleteWithKey(key);
+                    }
+                    //notifyItemChanged(i);
+                    //modifyData(recipe_title,image_link,recipe_id,recipe_status,fRIndicators);
+                }
+            });
         }
     }
 
