@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="200dp">
 
-    <com.example.volleyrvpractice.ViewClass.ShadowView
+    <com.example.cookbook2.ViewClass.ShadowView
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:layout_marginBottom="24dp"
@@ -13,7 +13,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    <com.example.volleyrvpractice.ViewClass.FloatingImageView
+    <com.example.cookbook2.ViewClass.FloatingImageView
         android:id="@+id/imageView2"
         android:layout_width="100dp"
         android:layout_height="100dp"

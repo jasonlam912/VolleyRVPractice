@@ -56,7 +56,7 @@ android {
     sourceSets {
         main {
             java {
-                srcDirs 'src/main/java', 'src/main/java/com.example.volleyrvpractice/IngredientClasses'
+                srcDirs 'src/main/java', 'src/main/java/com.jasonstudio.cookbook2/IngredientClasses'
             }
         }
     }
