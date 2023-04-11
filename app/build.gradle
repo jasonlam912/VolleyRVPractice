@@ -15,6 +15,7 @@ project.logger.lifecycle(versionProperties['versionCode'])
 android {
     compileSdkVersion 33
     buildToolsVersion '30.0.3'
+    namespace "com.jasonstudio.cookbook2"
 
     defaultConfig {
         applicationId 'com.jasonstudio.cookbook2'
@@ -36,8 +37,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+        sourceCompatibility 11
+        targetCompatibility 11
     }
 
     buildTypes {
@@ -100,5 +101,5 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.7'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.8.2'
-
+    implementation 'androidx.tracing:tracing:1.1.0'
 }

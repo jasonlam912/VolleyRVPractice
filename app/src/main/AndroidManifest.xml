@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cookbook2">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,22 +10,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme2">
-        <activity android:name="com.example.cookbook2.FavouriteRecipe.FavouriteRecipeActivity"
+        <activity android:name="com.jasonstudio.cookbook2.FavouriteRecipe.FavouriteRecipeActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName="com.example.cookbook2.MainActivity">
+            android:parentActivityName="com.jasonstudio.cookbook2.MainActivity">
             <meta-data
                 android:name="Recipe List"
                 android:value=".MainActivity" />
         </activity>
         <activity
             android:screenOrientation="portrait"
-            android:name="com.example.cookbook2.RecipeActivity"
-            android:parentActivityName="com.example.cookbook2.MainActivity"
+            android:name="com.jasonstudio.cookbook2.RecipeActivity"
+            android:parentActivityName="com.jasonstudio.cookbook2.MainActivity"
             android:theme="@style/AppThemeRecipe">
 
         </activity>
         <activity
-            android:name="com.example.cookbook2.MainActivity"
+            android:name="com.jasonstudio.cookbook2.MainActivity"
             android:theme="@style/SplashScreenTheme"
             android:exported="true">
             <intent-filter>
