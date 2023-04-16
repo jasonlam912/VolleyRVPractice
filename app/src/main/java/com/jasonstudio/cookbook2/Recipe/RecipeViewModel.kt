@@ -1,19 +1,19 @@
-package com.example.volleyrvpractice.Recipe
+package com.jasonstudio.cookbook2.Recipe
 
 import android.content.Context
-import com.example.volleyrvpractice.Recipe.JsonData2Recipe.jsonObject2RandomRecipe
-import com.example.volleyrvpractice.Recipe.JsonData2Recipe.jsonObject2SearchRecipe
+import com.jasonstudio.cookbook2.Recipe.JsonData2Recipe.jsonObject2RandomRecipe
+import com.jasonstudio.cookbook2.Recipe.JsonData2Recipe.jsonObject2SearchRecipe
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.Glide
-import com.example.volleyrvpractice.Network.NetworkManager
-import com.example.volleyrvpractice.Network.CallbackListener
-import com.example.volleyrvpractice.Network.GlideCallbackListener
+import com.jasonstudio.cookbook2.Network.NetworkManager
+import com.jasonstudio.cookbook2.Network.CallbackListener
+import com.jasonstudio.cookbook2.Network.GlideCallbackListener
 import org.json.JSONObject
-import com.example.volleyrvpractice.Network.GlideManager
+import com.jasonstudio.cookbook2.Network.GlideManager
 import java.util.ArrayList
 
 class RecipeViewModel : ViewModel() {

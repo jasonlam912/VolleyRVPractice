@@ -1,11 +1,11 @@
-package com.example.volleyrvpractice.IngredientClasses
+package com.jasonstudio.cookbook2.IngredientClasses
 
 import android.content.Context
-import com.example.volleyrvpractice.Network.NetworkManager.Companion.getInstance
+import com.jasonstudio.cookbook2.Network.NetworkManager.Companion.getInstance
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import android.view.LayoutInflater
-import com.example.volleyrvpractice.R
+import com.jasonstudio.cookbook2.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import android.widget.TextView

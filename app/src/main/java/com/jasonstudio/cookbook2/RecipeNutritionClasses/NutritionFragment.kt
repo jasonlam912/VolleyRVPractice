@@ -1,8 +1,8 @@
-package com.example.volleyrvpractice.RecipeNutritionClasses
+package com.jasonstudio.cookbook2.RecipeNutritionClasses
 
 import android.graphics.Color
 import android.os.Bundle
-import com.example.volleyrvpractice.RecipeNutritionClasses.NutritionFragment
+import com.jasonstudio.cookbook2.RecipeNutritionClasses.NutritionFragment
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.data.BarEntry
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.android.volley.Request
-import com.example.volleyrvpractice.R
+import com.jasonstudio.cookbook2.R
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import com.android.volley.toolbox.JsonObjectRequest

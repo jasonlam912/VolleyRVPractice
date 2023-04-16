@@ -1,4 +1,4 @@
-package com.example.volleyrvpractice.RecipeInstructionClasses
+package com.jasonstudio.cookbook2.RecipeInstructionClasses
 
 import android.content.Context
 import org.json.JSONArray
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
-import com.example.volleyrvpractice.R
+import com.jasonstudio.cookbook2.R
 import org.json.JSONObject
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy

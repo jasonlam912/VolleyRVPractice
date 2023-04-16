@@ -1,4 +1,4 @@
-package com.example.volleyrvpractice.ext
+package com.jasonstudio.cookbook2.ext
 
 import android.content.Intent
 import android.os.Build.VERSION.SDK_INT

@@ -1,14 +1,14 @@
-package com.example.volleyrvpractice.RecipeInstructionClasses
+package com.jasonstudio.cookbook2.RecipeInstructionClasses
 
 import android.content.Context
 import org.json.JSONArray
 import androidx.recyclerview.widget.RecyclerView
-import com.example.volleyrvpractice.RecipeInstructionClasses.InstructionIngredientAdapter
-import com.example.volleyrvpractice.RecipeInstructionClasses.InstructionEquipmentAdapter
+import com.jasonstudio.cookbook2.RecipeInstructionClasses.InstructionIngredientAdapter
+import com.jasonstudio.cookbook2.RecipeInstructionClasses.InstructionEquipmentAdapter
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
-import com.example.volleyrvpractice.R
+import com.jasonstudio.cookbook2.R
 import org.json.JSONObject
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.json.JSONException

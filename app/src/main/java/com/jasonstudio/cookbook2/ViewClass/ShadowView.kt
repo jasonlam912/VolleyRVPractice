@@ -1,4 +1,4 @@
-package com.example.volleyrvpractice.ViewClass
+package com.jasonstudio.cookbook2.ViewClass
 
 import android.content.Context
 import android.util.AttributeSet

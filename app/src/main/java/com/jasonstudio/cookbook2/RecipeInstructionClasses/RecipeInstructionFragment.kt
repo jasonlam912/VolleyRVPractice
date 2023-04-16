@@ -1,7 +1,7 @@
-package com.example.volleyrvpractice.RecipeInstructionClasses
+package com.jasonstudio.cookbook2.RecipeInstructionClasses
 import android.os.Bundle
 import android.util.Log
-import com.example.volleyrvpractice.RecipeInstructionClasses.RecipeInstructionFragment
+import com.jasonstudio.cookbook2.RecipeInstructionClasses.RecipeInstructionFragment
 import org.json.JSONArray
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.RequestQueue
@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
-import com.example.volleyrvpractice.R
+import com.jasonstudio.cookbook2.R
 import org.json.JSONObject
 import org.json.JSONException
 import com.android.volley.toolbox.Volley

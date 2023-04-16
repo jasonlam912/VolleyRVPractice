@@ -1,4 +1,4 @@
-package com.example.volleyrvpractice.ViewClass
+package com.jasonstudio.cookbook2.ViewClass
 
 import android.content.Context
 import android.util.AttributeSet
@@ -16,9 +16,8 @@ class FloatingImageView : AppCompatImageView {
     private lateinit var animSet1: AnimationSet
     private lateinit var animSet2: AnimationSet
 
-    constructor(context: Context?) : super(context) {}
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {}
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
         defStyleAttr

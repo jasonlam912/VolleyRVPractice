@@ -1,21 +1,21 @@
-package com.example.volleyrvpractice
+package com.jasonstudio.cookbook2
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import com.example.volleyrvpractice.RecipeInstructionClasses.RecipeInstructionFragment
-import com.example.volleyrvpractice.IngredientClasses.IngredientFragement
-import com.example.volleyrvpractice.RecipeNutritionClasses.NutritionFragment
+import com.jasonstudio.cookbook2.RecipeInstructionClasses.RecipeInstructionFragment
+import com.jasonstudio.cookbook2.IngredientClasses.IngredientFragement
+import com.jasonstudio.cookbook2.RecipeNutritionClasses.NutritionFragment
 import android.graphics.Bitmap
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeViewModel
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeViewModel
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.example.volleyrvpractice.R
-import com.example.volleyrvpractice.RecipeActivity.ViewPagerAdapter
+import com.jasonstudio.cookbook2.R
+import com.jasonstudio.cookbook2.RecipeActivity.ViewPagerAdapter
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -25,11 +25,11 @@ import android.widget.ToggleButton
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
 import com.google.android.material.snackbar.Snackbar
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.volleyrvpractice.RecipeActivity
-import com.example.volleyrvpractice.ext.parcelable
+import com.jasonstudio.cookbook2.RecipeActivity
+import com.jasonstudio.cookbook2.ext.parcelable
 import java.util.ArrayList
 
 class RecipeActivity : AppCompatActivity() {

@@ -1,11 +1,11 @@
-package com.example.volleyrvpractice.IngredientClasses
+package com.jasonstudio.cookbook2.IngredientClasses
 
 import android.content.res.Configuration
-import com.example.volleyrvpractice.Network.NetworkManager.Companion.getInstance
+import com.jasonstudio.cookbook2.Network.NetworkManager.Companion.getInstance
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import android.view.LayoutInflater
-import com.example.volleyrvpractice.R
+import com.jasonstudio.cookbook2.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import android.widget.TextView
@@ -13,13 +13,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.example.volleyrvpractice.IngredientClasses.IngredientFragement
-import com.example.volleyrvpractice.IngredientClasses.IngredientAdapter
+import com.jasonstudio.cookbook2.IngredientClasses.IngredientFragement
+import com.jasonstudio.cookbook2.IngredientClasses.IngredientAdapter
 import com.android.volley.RequestQueue
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.volley.Request
-import com.example.volleyrvpractice.Network.NetworkManager
+import com.jasonstudio.cookbook2.Network.NetworkManager
 import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONObject
 import org.json.JSONException

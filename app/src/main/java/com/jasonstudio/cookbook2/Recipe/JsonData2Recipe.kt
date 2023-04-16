@@ -1,12 +1,12 @@
-package com.example.volleyrvpractice.Recipe
+package com.jasonstudio.cookbook2.Recipe
 
 import kotlin.Throws
 import org.json.JSONException
 import org.json.JSONObject
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe
-import com.example.volleyrvpractice.Recipe.RecipeModel
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
+import com.jasonstudio.cookbook2.Recipe.RecipeModel
 import org.json.JSONArray
-import com.example.volleyrvpractice.Recipe.JsonData2Recipe
+import com.jasonstudio.cookbook2.Recipe.JsonData2Recipe
 import java.util.ArrayList
 
 object JsonData2Recipe {

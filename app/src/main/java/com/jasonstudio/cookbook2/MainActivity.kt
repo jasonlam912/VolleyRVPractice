@@ -1,17 +1,17 @@
-package com.example.volleyrvpractice
+package com.jasonstudio.cookbook2
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.volleyrvpractice.RecipeAdapter
+import com.jasonstudio.cookbook2.RecipeAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.volleyrvpractice.Recipe.RecipeViewModel
+import com.jasonstudio.cookbook2.Recipe.RecipeViewModel
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.os.Bundle
-import com.example.volleyrvpractice.R
-import com.example.volleyrvpractice.MainActivity
-import com.example.volleyrvpractice.Recipe.RecipeModel
+import com.jasonstudio.cookbook2.R
+import com.jasonstudio.cookbook2.MainActivity
+import com.jasonstudio.cookbook2.Recipe.RecipeModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import androidx.core.view.GravityCompat
@@ -25,7 +25,7 @@ import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
-import com.example.volleyrvpractice.FavouriteRecipe.FavouriteRecipeActivity
+import com.jasonstudio.cookbook2.FavouriteRecipe.FavouriteRecipeActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import java.util.ArrayList

@@ -1,22 +1,22 @@
-package com.example.volleyrvpractice.Recipe
+package com.jasonstudio.cookbook2.Recipe
 
-import com.example.volleyrvpractice.Recipe.JsonData2Recipe.jsonObject2RandomRecipe
-import com.example.volleyrvpractice.Recipe.JsonData2Recipe.jsonObject2SearchRecipe
+import com.jasonstudio.cookbook2.Recipe.JsonData2Recipe.jsonObject2RandomRecipe
+import com.jasonstudio.cookbook2.Recipe.JsonData2Recipe.jsonObject2SearchRecipe
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.MutableLiveData
-import com.example.volleyrvpractice.Recipe.RecipeModel
+import com.jasonstudio.cookbook2.Recipe.RecipeModel
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.Glide
-import com.example.volleyrvpractice.Network.NetworkManager
-import com.example.volleyrvpractice.Network.CallbackListener
+import com.jasonstudio.cookbook2.Network.NetworkManager
+import com.jasonstudio.cookbook2.Network.CallbackListener
 import kotlin.Throws
 import org.json.JSONException
 import org.json.JSONObject
-import com.example.volleyrvpractice.Recipe.JsonData2Recipe
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe
-import com.example.volleyrvpractice.Network.GlideManager
-import com.example.volleyrvpractice.Network.GlideCallbackListener
+import com.jasonstudio.cookbook2.Recipe.JsonData2Recipe
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
+import com.jasonstudio.cookbook2.Network.GlideManager
+import com.jasonstudio.cookbook2.Network.GlideCallbackListener
 
 data class RecipeModel (
     var recipeId: String?,

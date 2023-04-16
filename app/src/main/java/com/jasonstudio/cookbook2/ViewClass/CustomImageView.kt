@@ -1,9 +1,9 @@
-package com.example.volleyrvpractice.ViewClass
+package com.jasonstudio.cookbook2.ViewClass
 
 import androidx.appcompat.widget.AppCompatImageView
 import android.animation.ValueAnimator
 import android.view.animation.ScaleAnimation
-import com.example.volleyrvpractice.R
+import com.jasonstudio.cookbook2.R
 import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.content.Context
 import android.util.AttributeSet
@@ -18,9 +18,7 @@ class CustomImageView : AppCompatImageView {
     private var duration = 0
     private lateinit var colorDownAnimator: ValueAnimator
     private lateinit var colorUpAnimator: ValueAnimator
-
-    constructor(context: Context?) : super(context) {}
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         duration = 200
         animationDown = ScaleAnimation(
             1f,
@@ -62,7 +60,7 @@ class CustomImageView : AppCompatImageView {
         })
     }
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
         defStyleAttr

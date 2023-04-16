@@ -15,4 +15,6 @@ key.properties
 /captures
 .externalNativeBuild
 .cxx
+/Gemfile
+/fastlane
 

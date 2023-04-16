@@ -1,10 +1,10 @@
-package com.example.volleyrvpractice.FavouriteRecipeModel
+package com.jasonstudio.cookbook2.FavouriteRecipeModel
 
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeDao
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeDatabase
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeDao
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeDatabase
 import androidx.lifecycle.AndroidViewModel
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeRepository
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeRepository
 import android.os.AsyncTask
 import androidx.room.*
 import io.reactivex.Observable

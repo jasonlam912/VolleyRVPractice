@@ -1,21 +1,21 @@
-package com.example.volleyrvpractice.FavouriteRecipeModel
+package com.jasonstudio.cookbook2.FavouriteRecipeModel
 
 import android.app.Application
 import androidx.room.PrimaryKey
 import androidx.room.Dao
 import androidx.room.OnConflictStrategy
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeDao
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeDatabase
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeDao
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeDatabase
 import androidx.room.Room
 import androidx.lifecycle.AndroidViewModel
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeRepository
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeRepository.DeleteFRAsyncTasks
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeRepository.InsertFRAsyncTasks
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeRepository.DeleteAllFRsAsyncTasks
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeRepository.DeleteFRWithKeyAsyncTasks
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeRepository
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeRepository.DeleteFRAsyncTasks
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeRepository.InsertFRAsyncTasks
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeRepository.DeleteAllFRsAsyncTasks
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeRepository.DeleteFRWithKeyAsyncTasks
 import android.os.AsyncTask
 import io.reactivex.Observable
 

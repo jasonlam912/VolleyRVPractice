@@ -1,23 +1,23 @@
-package com.example.volleyrvpractice.FavouriteRecipe
+package com.jasonstudio.cookbook2.FavouriteRecipe
 
 import androidx.appcompat.app.AppCompatActivity
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeViewModel
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.example.volleyrvpractice.RecipeAdapter
-import com.example.volleyrvpractice.R
+import com.jasonstudio.cookbook2.RecipeAdapter
+import com.jasonstudio.cookbook2.R
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.example.volleyrvpractice.Recipe.RecipeModel
+import com.jasonstudio.cookbook2.Recipe.RecipeModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.ViewModelProvider
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.android.schedulers.AndroidSchedulers
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
 import kotlin.Throws
-import com.example.volleyrvpractice.Recipe.JsonData2Recipe
-import com.example.volleyrvpractice.FavouriteRecipe.FavouriteRecipeActivity
+import com.jasonstudio.cookbook2.Recipe.JsonData2Recipe
+import com.jasonstudio.cookbook2.FavouriteRecipe.FavouriteRecipeActivity
 import io.reactivex.functions.Consumer
 import java.util.ArrayList
 

@@ -1,8 +1,8 @@
-package com.example.volleyrvpractice.ViewClass
+package com.jasonstudio.cookbook2.ViewClass
 
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.animation.ValueAnimator
-import com.example.volleyrvpractice.R
+import com.jasonstudio.cookbook2.R
 import android.view.animation.ScaleAnimation
 import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.content.Context
@@ -19,9 +19,7 @@ class CustomRowView : ConstraintLayout {
     private var colorStart = 0
     private var colorEnd = 0
     private val press = false
-
-    constructor(context: Context?) : super(context) {}
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         colorStart = resources.getColor(R.color.colorActionUp)
         colorEnd = resources.getColor(R.color.colorActionDown)
         animationDown = ScaleAnimation(
@@ -64,7 +62,7 @@ class CustomRowView : ConstraintLayout {
         })
     }
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
         defStyleAttr

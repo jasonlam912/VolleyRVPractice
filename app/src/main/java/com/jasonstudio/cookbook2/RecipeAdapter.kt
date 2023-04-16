@@ -1,20 +1,20 @@
-package com.example.volleyrvpractice
+package com.jasonstudio.cookbook2
 
-import com.example.volleyrvpractice.Recipe.RecipeModel
+import com.jasonstudio.cookbook2.Recipe.RecipeModel
 import androidx.recyclerview.widget.RecyclerView
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipeViewModel
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.fragment.app.FragmentActivity
 import android.view.ViewGroup
 import android.view.LayoutInflater
-import com.example.volleyrvpractice.R
-import com.example.volleyrvpractice.RecipeAdapter.MyViewHolder
-import com.example.volleyrvpractice.RecipeAdapter.LoadViewHolder
-import com.example.volleyrvpractice.RecipeAdapter.EndViewHolder
-import com.example.volleyrvpractice.RecipeAdapter.PaddingViewHolder
+import com.jasonstudio.cookbook2.R
+import com.jasonstudio.cookbook2.RecipeAdapter.MyViewHolder
+import com.jasonstudio.cookbook2.RecipeAdapter.LoadViewHolder
+import com.jasonstudio.cookbook2.RecipeAdapter.EndViewHolder
+import com.jasonstudio.cookbook2.RecipeAdapter.PaddingViewHolder
 import androidx.appcompat.widget.AppCompatTextView
 import android.content.Intent
-import com.example.volleyrvpractice.RecipeActivity
+import com.jasonstudio.cookbook2.RecipeActivity
 import androidx.core.app.ActivityOptionsCompat
 import android.app.Activity
 import android.content.Context
@@ -24,7 +24,7 @@ import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.ToggleButton
 import androidx.core.util.Pair
-import com.example.volleyrvpractice.FavouriteRecipeModel.FavouriteRecipe
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
 
 class RecipeAdapter(private val ct: Context, var recipeData: List<RecipeModel>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
