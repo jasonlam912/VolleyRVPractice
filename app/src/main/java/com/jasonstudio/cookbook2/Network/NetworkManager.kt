@@ -54,18 +54,6 @@ class NetworkManager private constructor(val ctx: Context) {
         getRequestQueue()!!.add(req)
     }
 
-    fun getRandomRecipe(listener: CallbackListener) {
-        val request =
-            JsonObjectRequest(Request.Method.GET, randomRecipeUrl + api, null, { response ->
-                try {
-                    listener.getResult(response)
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }) { error -> error.printStackTrace() }
-        requestQueue!!.add(request)
-    }
-
     fun getSearchRecipe(query: String, offset: Int, listener: CallbackListener) {
         val request = JsonObjectRequest(
             Request.Method.GET,

@@ -1,4 +1,4 @@
-package com.jasonstudio.cookbook2.IngredientClasses
+package com.jasonstudio.cookbook2.view.IngredientClasses
 
 import android.content.res.Configuration
 import com.jasonstudio.cookbook2.Network.NetworkManager.Companion.getInstance
@@ -13,8 +13,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.jasonstudio.cookbook2.IngredientClasses.IngredientFragement
-import com.jasonstudio.cookbook2.IngredientClasses.IngredientAdapter
+import androidx.lifecycle.lifecycleScope
+import com.jasonstudio.cookbook2.view.IngredientClasses.IngredientFragement
+import com.jasonstudio.cookbook2.view.IngredientClasses.IngredientAdapter
 import com.android.volley.RequestQueue
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,6 +25,9 @@ import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONObject
 import org.json.JSONException
 import com.android.volley.VolleyError
+import com.jasonstudio.cookbook2.Network.SpoonacularService
+import com.jasonstudio.cookbook2.model.IngredientsResponse
+import kotlinx.coroutines.launch
 import kotlin.Throws
 import org.json.JSONArray
 import java.util.*
@@ -34,15 +38,8 @@ import java.util.*
  * create an instance of this fragment.
  */
 class IngredientFragement : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var mParam1: String? = null
-    private var mParam2: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            mParam1 = arguments!!.getString(ARG_PARAM1)
-            mParam2 = arguments!!.getString(ARG_PARAM2)
-        }
     }
 
     private var recipe_id: String? = null
@@ -55,14 +52,11 @@ class IngredientFragement : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        recipe_id = arguments!!.getString("recipe_id")
-        //Log.d("IgdFragIgdData", ingredientData.toString());
-        //Log.d("recipeID", recipe_id);
+        recipe_id = requireArguments().getString("recipe_id")
         recipeData = HashMap()
-        recipeData!!["ingredient_image_url"] = ArrayList()
-        recipeData!!["ingredient_title"] = ArrayList()
-        recipeData!!["ingredient_amount"] = ArrayList()
+        recipeData["ingredient_image_url"] = ArrayList()
+        recipeData["ingredient_title"] = ArrayList()
+        recipeData["ingredient_amount"] = ArrayList()
         root = inflater.inflate(R.layout.fragment_ingredient_fragement, container, false)
         rv = root.findViewById(R.id.ingredient_rv)
         val testData = HashMap<String, List<String>>()
@@ -89,60 +83,45 @@ class IngredientFragement : Fragment() {
         )
         adapter = IngredientAdapter(context, recipeData, recipe_id)
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            rv.setLayoutManager(LinearLayoutManager(context))
+            rv.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         } else {
-            rv.setLayoutManager(GridLayoutManager(context, 2))
+            rv.layoutManager = GridLayoutManager(context, 2)
         }
-        rv.setAdapter(adapter)
+        rv.adapter = adapter
         queue = getInstance(requireContext()).getRequestQueue()!!
         loadRecipeDetails()
-        return view
+        return root
     }
 
     fun loadRecipeDetails() {
-        val url =
-            "https://api.spoonacular.com/recipes/" + recipe_id + "/information?includeNutrition=false&apiKey=" + resources.getString(
-                R.string.apiKeyUsing
+        lifecycleScope.launch {
+            val response = SpoonacularService.getInstance().getIngredients(
+                recipe_id!!
             )
-        Log.d("url", url)
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null, { response ->
-            try {
-                readIngredient(response)
+            response.body()?.let {
+                readIngredient(it)
                 adapter!!.ModifyData(recipeData)
-            } catch (e: JSONException) {
-                e.printStackTrace()
             }
-        }) { error -> error.printStackTrace() }
-        queue!!.add(jsonObjectRequest)
+        }
     }
 
     @Throws(JSONException::class)
-    private fun readIngredient(response: JSONObject) {
-        val array = response.getJSONArray("extendedIngredients")
-        for (i in 0 until array.length()) {
-            val ingredient = array[i] as JSONObject
-            val igdImageUrl =
-                "https://spoonacular.com/cdn/ingredients_100x100/" + ingredient.getString("image")
-            recipeData!!["ingredient_image_url"]!!.add(igdImageUrl)
-            val igdTitle = ingredient.getString("name")
-            recipeData!!["ingredient_title"]!!.add(igdTitle)
-            val igdAmountUnitTemp =
-                ingredient.getJSONObject("measures").getJSONObject("us").getString("unitLong") + " "
-            val igdAmountUnit =
-                if (igdAmountUnitTemp.trim { it <= ' ' } == "") "unit" else igdAmountUnitTemp
-            val igdAmount =
-                convertDecimalToFraction(ingredient.getDouble("amount")) + " " + igdAmountUnit
-            recipeData!!["ingredient_amount"]!!.add(igdAmount)
+    private fun readIngredient(response: IngredientsResponse) {
+        for (ingredient in response.extendedIngredients) {
+            recipeData["ingredient_image_url"]!!.add(
+                "https://spoonacular.com/cdn/ingredients_100x100/${ingredient.image}"
+            )
+            recipeData["ingredient_title"]!!.add(ingredient.name)
+            val igdAmountUnitTemp = ingredient.measures.us.unitLong + " "
+            val igdAmountUnit = if (igdAmountUnitTemp.trim { it <= ' ' } == "") "unit" else igdAmountUnitTemp
+            val igdAmount = convertDecimalToFraction(ingredient.amount) + " " + igdAmountUnit
+            recipeData["ingredient_amount"]!!.add(igdAmount)
         }
         Log.d("recipeData", recipeData.toString())
     }
 
     private val isPortrait: Boolean
-        private get() = if (this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            true
-        } else {
-            false
-        }
+        get() = this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

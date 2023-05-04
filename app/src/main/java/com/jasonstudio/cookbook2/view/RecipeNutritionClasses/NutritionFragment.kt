@@ -1,14 +1,15 @@
-package com.jasonstudio.cookbook2.RecipeNutritionClasses
+package com.jasonstudio.cookbook2.view.RecipeNutritionClasses
 
 import android.graphics.Color
 import android.os.Bundle
-import com.jasonstudio.cookbook2.RecipeNutritionClasses.NutritionFragment
+import com.jasonstudio.cookbook2.view.RecipeNutritionClasses.NutritionFragment
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.data.BarEntry
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.android.volley.Request
 import com.jasonstudio.cookbook2.R
 import com.android.volley.RequestQueue
@@ -26,6 +27,9 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.gson.Gson
+import com.jasonstudio.cookbook2.Network.SpoonacularService
+import kotlinx.coroutines.launch
 import java.util.ArrayList
 
 /**
@@ -65,21 +69,16 @@ class NutritionFragment : Fragment() {
     }
 
     private fun loadNutritionData(recipeId: String?) {
-        val queue = Volley.newRequestQueue(context)
-        val url =
-            "https://api.spoonacular.com/recipes/" + recipeId + "/nutritionWidget.json?apiKey=" + resources.getString(
-                R.string.apiKeyUsing
-            )
-        val request = JsonObjectRequest(Request.Method.GET, url, null, { response ->
-            try {
-                setChartData(response)
+        lifecycleScope.launch {
+            val response = SpoonacularService.getInstance().getNutritions(recipeId!!)
+            response.body()?.let {
+                val str = Gson().toJson(it)
+                val jsonObject = JSONObject(str)
+                setChartData(jsonObject)
                 buildMainChart()
                 buildOtherChart()
-            } catch (e: JSONException) {
-                e.printStackTrace()
             }
-        }) { error -> error.printStackTrace() }
-        queue.add(request)
+        }
     }
 
     @Throws(JSONException::class)

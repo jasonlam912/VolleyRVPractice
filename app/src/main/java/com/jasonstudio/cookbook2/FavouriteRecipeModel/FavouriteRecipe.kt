@@ -8,7 +8,7 @@ import android.os.AsyncTask
 import androidx.room.*
 
 @Entity(tableName = "Favourite_Recipe_Table")
-class FavouriteRecipe(val id: String, val title: String) {
+data class FavouriteRecipe(val id: String, val title: String) {
     @PrimaryKey(autoGenerate = true)
     var primaryKey = 0
 

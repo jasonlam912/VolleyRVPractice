@@ -1,4 +1,4 @@
-package com.jasonstudio.cookbook2.ViewClass
+package com.jasonstudio.cookbook2.view.custom
 
 import android.content.Context
 import android.util.AttributeSet

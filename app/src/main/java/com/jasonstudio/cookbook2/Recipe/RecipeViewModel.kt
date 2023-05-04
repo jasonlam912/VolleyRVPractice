@@ -7,13 +7,13 @@ import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.Glide
-import com.jasonstudio.cookbook2.Network.NetworkManager
-import com.jasonstudio.cookbook2.Network.CallbackListener
-import com.jasonstudio.cookbook2.Network.GlideCallbackListener
+import com.jasonstudio.cookbook2.Network.*
+import kotlinx.coroutines.launch
 import org.json.JSONObject
-import com.jasonstudio.cookbook2.Network.GlideManager
+import retrofit2.http.Query
 import java.util.ArrayList
 
 class RecipeViewModel : ViewModel() {
@@ -51,12 +51,15 @@ class RecipeViewModel : ViewModel() {
             resetData(ct)
             isSearch = !isSearch
         }
-        NetworkManager.getInstance(ct).getRandomRecipe (object : CallbackListener {
-            override fun getResult(jsonObject: JSONObject) {
+        viewModelScope.launch {
+            val result = SpoonacularService.getInstance().getRandomRecipes()
+            result.body()?.let {
                 deleteLastItem()
                 val list = data.value!!
                 //Log.d("isNull", Boolean.toString(allFRList.getValue()==null));
-                val newList = jsonObject2RandomRecipe(jsonObject, ArrayList())
+                val newList = it.recipes.map { recipe ->
+                    recipe.toRecipeModel()
+                }
                 list.addAll(newList)
                 loadFoodImage(list, ct)
                 data.value = list
@@ -67,7 +70,7 @@ class RecipeViewModel : ViewModel() {
                 }
                 isLoading.value = false
             }
-        })
+        }
     }
 
     fun putSearchRecipe(ct: Context, query: String?) {
@@ -76,22 +79,26 @@ class RecipeViewModel : ViewModel() {
             resetData(ct)
             isSearch = !isSearch
         }
-        NetworkManager.getInstance(ct).getSearchRecipe(query!!, data.value!!.size - 2, object : CallbackListener {
-            override fun getResult(jsonObject: JSONObject) {
-                deleteLastItem()
-                val list = data.value!!
-                val newList = jsonObject2SearchRecipe(jsonObject, ArrayList())
-                list.addAll(newList)
-                loadFoodImage(list, ct)
-                data.value = list
-                if (newList.isEmpty()) {
-                    addEndItem()
-                } else {
-                    addLoadingItem()
-                }
-                isLoading.value = false
+        viewModelScope.launch {
+            val response = SpoonacularService.getInstance().searchRecipes(
+                query!!,
+                offset = data.value!!.size - 2
+            )
+            val newList = response.body()?.results?.map {
+                it.toRecipeModel()
+            }!!
+            deleteLastItem()
+            val list = data.value!!
+            list.addAll(newList)
+            loadFoodImage(list, ct)
+            data.value = list
+            if (newList.isEmpty()) {
+                addEndItem()
+            } else {
+                addLoadingItem()
             }
-        })
+            isLoading.value = false
+        }
     }
 
     fun putRecipe(ct: Context, query: String?) {

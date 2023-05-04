@@ -1,4 +1,4 @@
-package com.jasonstudio.cookbook2.IngredientClasses
+package com.jasonstudio.cookbook2.view.IngredientClasses
 
 import android.content.Context
 import com.jasonstudio.cookbook2.Network.NetworkManager.Companion.getInstance
@@ -37,7 +37,6 @@ class IngredientAdapter(
             .load(igdData!!["ingredient_image_url"]!![position])
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.ingredientImage)
-        //Log.d("igdAdaOnBindviewHolder",igdData.get("ingredient_title").get(position));
     }
 
     override fun getItemCount(): Int {

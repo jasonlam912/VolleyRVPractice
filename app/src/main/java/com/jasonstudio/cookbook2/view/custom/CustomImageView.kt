@@ -1,27 +1,25 @@
-package com.jasonstudio.cookbook2.ViewClass
+package com.jasonstudio.cookbook2.view.custom
 
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.appcompat.widget.AppCompatImageView
 import android.animation.ValueAnimator
-import com.jasonstudio.cookbook2.R
 import android.view.animation.ScaleAnimation
+import com.jasonstudio.cookbook2.R
 import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.animation.Animation
 
-class CustomRowView : ConstraintLayout {
-    private val duration = 100
+class CustomImageView : AppCompatImageView {
     private lateinit var animationDown: Animation
     private lateinit var animationUp: Animation
-    private lateinit var colorDownAnimator: ValueAnimator
-    private lateinit var colorUpAnimator: ValueAnimator
     private var colorStart = 0
     private var colorEnd = 0
-    private val press = false
+    private var duration = 0
+    private lateinit var colorDownAnimator: ValueAnimator
+    private lateinit var colorUpAnimator: ValueAnimator
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        colorStart = resources.getColor(R.color.colorActionUp)
-        colorEnd = resources.getColor(R.color.colorActionDown)
+        duration = 200
         animationDown = ScaleAnimation(
             1f,
             0.8f,
@@ -46,17 +44,17 @@ class CustomRowView : ConstraintLayout {
         )
         animationUp.setDuration(duration.toLong())
         animationUp.setFillAfter(true)
+        colorEnd = resources.getColor(R.color.colorActionDown)
+        colorStart = resources.getColor(R.color.colorActionUp)
         colorDownAnimator = ValueAnimator.ofArgb(colorStart, colorEnd)
         colorDownAnimator.setDuration(duration.toLong())
-        colorDownAnimator.addUpdateListener(AnimatorUpdateListener { animation ->
-            setBackgroundColor(
-                animation.animatedValue as Int
-            )
+        colorDownAnimator.addUpdateListener(AnimatorUpdateListener { animation -> //Log.d("onAnimationUpdate", animation.getAnimatedValue().toString());
+            this@CustomImageView.setColorFilter(animation.animatedValue as Int)
         })
         colorUpAnimator = ValueAnimator.ofArgb(colorEnd, colorStart)
         colorUpAnimator.setDuration(duration.toLong())
         colorUpAnimator.addUpdateListener(AnimatorUpdateListener { animation ->
-            setBackgroundColor(
+            this@CustomImageView.setColorFilter(
                 animation.animatedValue as Int
             )
         })
@@ -73,15 +71,20 @@ class CustomRowView : ConstraintLayout {
         super.onTouchEvent(event)
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
+
+                //this.getDrawable().setColorFilter(0x12000000, PorterDuff.Mode.SRC_ATOP);
+                //this.invalidate();
                 startAnimation(animationDown)
                 colorDownAnimator!!.start()
             }
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                startAnimation(animationUp)
+            MotionEvent.ACTION_UP -> {
+                //this.getDrawable().clearColorFilter();
+                //
+                // this.invalidate();
                 colorUpAnimator!!.start()
+                startAnimation(animationUp)
             }
         }
-        //Log.d("getAction",Integer.toString(event.getActionMasked()));
         return true
     }
 }

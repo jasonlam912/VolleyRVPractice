@@ -1,4 +1,4 @@
-package com.jasonstudio.cookbook2.RecipeInstructionClasses
+package com.jasonstudio.cookbook2.view.RecipeInstructionClasses
 
 import android.content.Context
 import org.json.JSONArray
@@ -14,41 +14,41 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import org.json.JSONException
 import android.widget.TextView
 
-class InstructionEquipmentAdapter(private val ct: Context, private val eqmList: JSONArray) :
-    RecyclerView.Adapter<InstructionEquipmentAdapter.ViewHolder>() {
+class InstructionIngredientAdapter(private val ct: Context, private val igdList: JSONArray) :
+    RecyclerView.Adapter<InstructionIngredientAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(ct)
-        val view = inflater.inflate(R.layout.instruction_equipment_column, parent, false)
+        val view = inflater.inflate(R.layout.instruction_ingredient_column, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         try {
-            val eqmData = eqmList[position] as JSONObject
-            val eqmTitleString = eqmData.getString("name")
-            val eqmImageUrl =
-                "https://spoonacular.com/cdn/equipment_250x250/" + eqmData.getString("image")
-            holder.eqmTitle.text = eqmTitleString
+            val igdData = igdList[position] as JSONObject
+            val igdTitleString = igdData.getString("name")
+            val igdImageUrl =
+                "https://spoonacular.com/cdn/ingredients_250x250/" + igdData.getString("image")
+            holder.igdTitle.text = igdTitleString
             Glide.with(ct)
-                .load(eqmImageUrl)
+                .load(igdImageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.eqmImage)
+                .into(holder.igdImage)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
     }
 
     override fun getItemCount(): Int {
-        return eqmList.length()
+        return igdList.length()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var eqmTitle: TextView
-        var eqmImage: ImageView
+        var igdTitle: TextView
+        var igdImage: ImageView
 
         init {
-            eqmTitle = itemView.findViewById(R.id.instruction_equipment_title)
-            eqmImage = itemView.findViewById(R.id.instruction_equipment_image)
+            igdTitle = itemView.findViewById(R.id.instruction_ingredient_title)
+            igdImage = itemView.findViewById(R.id.instruction_ingredient_image)
         }
     }
 }

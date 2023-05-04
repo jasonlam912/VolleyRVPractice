@@ -28,9 +28,10 @@ import androidx.appcompat.widget.Toolbar
 import com.jasonstudio.cookbook2.FavouriteRecipe.FavouriteRecipeActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import com.jasonstudio.cookbook2.helper.SharedPref
 import java.util.ArrayList
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : MessagingActivity() {
     lateinit var rv: RecyclerView
     lateinit var adapter: RecipeAdapter
     lateinit var manager: LinearLayoutManager
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppThemeMain)
         super.onCreate(savedInstanceState)
+        SharedPref.init(applicationContext)
         setContentView(R.layout.activity_main)
         initializeDrawerLayout()
         orientation = resources.configuration.orientation

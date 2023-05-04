@@ -13,4 +13,6 @@
 
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Close</string>
+    <string name="video_views">%s views</string>
+    <string name="video_time_length">%1$s:%02d</string>
 </resources>

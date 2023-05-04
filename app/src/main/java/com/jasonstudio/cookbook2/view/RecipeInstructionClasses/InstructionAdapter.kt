@@ -1,10 +1,10 @@
-package com.jasonstudio.cookbook2.RecipeInstructionClasses
+package com.jasonstudio.cookbook2.view.RecipeInstructionClasses
 
 import android.content.Context
 import org.json.JSONArray
 import androidx.recyclerview.widget.RecyclerView
-import com.jasonstudio.cookbook2.RecipeInstructionClasses.InstructionIngredientAdapter
-import com.jasonstudio.cookbook2.RecipeInstructionClasses.InstructionEquipmentAdapter
+import com.jasonstudio.cookbook2.view.RecipeInstructionClasses.InstructionIngredientAdapter
+import com.jasonstudio.cookbook2.view.RecipeInstructionClasses.InstructionEquipmentAdapter
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View

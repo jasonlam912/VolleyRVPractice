@@ -1,7 +1,7 @@
-package com.jasonstudio.cookbook2.RecipeInstructionClasses
+package com.jasonstudio.cookbook2.view.RecipeInstructionClasses
 import android.os.Bundle
 import android.util.Log
-import com.jasonstudio.cookbook2.RecipeInstructionClasses.RecipeInstructionFragment
+import com.jasonstudio.cookbook2.view.RecipeInstructionClasses.RecipeInstructionFragment
 import org.json.JSONArray
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.RequestQueue
@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.jasonstudio.cookbook2.R
@@ -17,6 +18,9 @@ import org.json.JSONException
 import com.android.volley.toolbox.Volley
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.VolleyError
+import com.google.gson.Gson
+import com.jasonstudio.cookbook2.Network.SpoonacularService
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
@@ -44,7 +48,7 @@ class RecipeInstructionFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_recipe_instruction, container, false)
         outerRv = view.findViewById(R.id.outer_rv)
         outerRv.setLayoutManager(manager)
-        adapter = InstructionAdapter(context!!, data!!)
+        adapter = InstructionAdapter(requireContext(), data!!)
         outerRv.setAdapter(adapter)
 
 
@@ -60,19 +64,16 @@ class RecipeInstructionFragment : Fragment() {
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-        data!!.put(temp)
-        val url =
-            "https://api.spoonacular.com/recipes/" + recipe_id + "/analyzedInstructions?apiKey=" + resources.getString(
-                R.string.apiKeyUsing
-            )
-        queue = Volley.newRequestQueue(activity)
-        val request = JsonArrayRequest(Request.Method.GET, url, null, { response ->
-            data = response
-            adapter!!.modifyData(data!!)
-            //Log.d("StepsJSON", data.toString());
-            //Log.d("StepsJSONInAdapt",adapter.data.toString());
-        }) { error -> error.printStackTrace() }
-        queue.add(request)
+        data.put(temp)
+        lifecycleScope.launch {
+            val response = SpoonacularService.getInstance().getInstructions(recipe_id!!)
+            response.body()?.let {
+                val jsonStr = Gson().toJson(it)
+                val jsonArray = JSONArray(jsonStr)
+                data = jsonArray
+                adapter.modifyData(data)
+            }
+        }
     }
 
     companion object {
