@@ -1,6 +1,7 @@
 *.iml
 *.jks
 *.json
+!/app/google-services.json
 key.properties
 .gradle
 /local.properties
