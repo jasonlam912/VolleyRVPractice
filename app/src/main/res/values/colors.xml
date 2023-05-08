@@ -16,6 +16,7 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="grey">#888888</color>
+    <color name="gold">#FFD700</color>
     <color name="navigation_background">#B3FFFFFF</color>
 
     <color name="translucent_scrim_top">#26000000</color>

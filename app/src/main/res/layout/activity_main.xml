@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_background"
     android:id="@+id/drawer_layout"
-    tools:context=".MainActivity">
+    tools:context=".view.activity.MainActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_recipe_rv_container"

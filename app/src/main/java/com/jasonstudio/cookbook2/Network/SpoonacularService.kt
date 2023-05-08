@@ -3,6 +3,7 @@ package com.jasonstudio.cookbook2.Network
 import androidx.lifecycle.LiveData
 import com.jasonstudio.cookbook2.helper.SharedPref
 import com.jasonstudio.cookbook2.model.*
+import com.jasonstudio.cookbook2.util.LogUtil
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -13,6 +14,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.concurrent.TimeUnit
 
 
 interface SpoonacularService {
@@ -85,6 +87,8 @@ interface SpoonacularService {
             .build()
 
         private fun getOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+            .connectTimeout(100, TimeUnit.SECONDS)
+            .readTimeout(100, TimeUnit.SECONDS)
             .addInterceptor(getInterceptor())
             .addInterceptor(getReloadInterceptor())
             .build()
@@ -105,6 +109,7 @@ interface SpoonacularService {
 
         private fun getReloadInterceptor() = Interceptor {
             val request = it.request()
+            LogUtil.log(SharedPref.getApiKeyIndex(), request.url().url())
             var response: okhttp3.Response = it.proceed(request)
             while (response.code() == 402) {
                 SharedPref.addApiKeyIndex()

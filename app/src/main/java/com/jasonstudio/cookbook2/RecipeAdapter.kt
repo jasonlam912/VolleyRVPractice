@@ -7,24 +7,20 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.fragment.app.FragmentActivity
 import android.view.ViewGroup
 import android.view.LayoutInflater
-import com.jasonstudio.cookbook2.R
-import com.jasonstudio.cookbook2.RecipeAdapter.MyViewHolder
-import com.jasonstudio.cookbook2.RecipeAdapter.LoadViewHolder
-import com.jasonstudio.cookbook2.RecipeAdapter.EndViewHolder
-import com.jasonstudio.cookbook2.RecipeAdapter.PaddingViewHolder
 import androidx.appcompat.widget.AppCompatTextView
 import android.content.Intent
-import com.jasonstudio.cookbook2.RecipeActivity
 import androidx.core.app.ActivityOptionsCompat
 import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.view.View
-import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.ToggleButton
+import androidx.annotation.ColorRes
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.util.Pair
 import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
+import com.jasonstudio.cookbook2.view.activity.RecipeActivity
 
 class RecipeAdapter(private val ct: Context, var recipeData: List<RecipeModel>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -50,11 +46,11 @@ class RecipeAdapter(private val ct: Context, var recipeData: List<RecipeModel>) 
                 return MyViewHolder(view)
             }
             1 -> {
-                view = inflater.inflate(R.layout.loading_row, parent, false)
+                view = inflater.inflate(R.layout.row_loading, parent, false)
                 return LoadViewHolder(view)
             }
             2 -> {
-                view = inflater.inflate(R.layout.end_row, parent, false)
+                view = inflater.inflate(R.layout.row_end, parent, false)
                 return EndViewHolder(view)
             }
             3 -> {
@@ -134,8 +130,17 @@ class RecipeAdapter(private val ct: Context, var recipeData: List<RecipeModel>) 
             }
         }
     }
-
-    private inner class EndViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-    private inner class LoadViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-    private inner class PaddingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
+class EndViewHolder(itemView: View, @ColorRes color: Int = R.color.app_background) : RecyclerView.ViewHolder(itemView) {
+    init {
+        val view = itemView.findViewById<View>(R.id.cl_parent)
+        view.setBackgroundColor(ResourcesCompat.getColor(view.resources, color, null))
+    }
+}
+class LoadViewHolder(itemView: View, @ColorRes color: Int = R.color.app_background) : RecyclerView.ViewHolder(itemView) {
+    init {
+        val view = itemView.findViewById<View>(R.id.cl_parent)
+        view.setBackgroundColor(ResourcesCompat.getColor(view.resources, color, null))
+    }
+}
+class PaddingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

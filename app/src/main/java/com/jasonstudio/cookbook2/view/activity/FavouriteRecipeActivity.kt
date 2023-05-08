@@ -1,4 +1,4 @@
-package com.jasonstudio.cookbook2.FavouriteRecipe
+package com.jasonstudio.cookbook2.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeViewModel
@@ -14,11 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.ViewModelProvider
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.android.schedulers.AndroidSchedulers
-import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
-import kotlin.Throws
 import com.jasonstudio.cookbook2.Recipe.JsonData2Recipe
-import com.jasonstudio.cookbook2.FavouriteRecipe.FavouriteRecipeActivity
-import io.reactivex.functions.Consumer
 import java.util.ArrayList
 
 class FavouriteRecipeActivity : AppCompatActivity() {
@@ -44,13 +40,11 @@ class FavouriteRecipeActivity : AppCompatActivity() {
         title = "Favourite Recipes"
         rv = findViewById(R.id.favourite_recipe_rv)
         adapter = RecipeAdapter(this, ArrayList())
-        rv.setAdapter(adapter)
-        rv.setLayoutManager(
-            LinearLayoutManager(
-                this@FavouriteRecipeActivity,
-                RecyclerView.VERTICAL,
-                false
-            )
+        rv.adapter = adapter
+        rv.layoutManager = LinearLayoutManager(
+            this@FavouriteRecipeActivity,
+            RecyclerView.VERTICAL,
+            false
         )
         fRViewModel = ViewModelProvider(this).get(FavouriteRecipeViewModel::class.java)
         val d = fRViewModel.all?.subscribeOn(Schedulers.io())
@@ -67,14 +61,6 @@ class FavouriteRecipeActivity : AppCompatActivity() {
                 }
                 adapter!!.modifyData(recipeList)
             }, { throwable -> throwable.printStackTrace() })
-        /*
-                observe(this, new Observer<List<FavouriteRecipe>>() {
-            @Override
-            public void onChanged(List<FavouriteRecipe> favouriteRecipes) {
-
-
-            }
-        });*/
     }
 
     companion object {

@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.jasonstudio.cookbook2.view.activity.RecipeActivity;
+
 /**
  * Example local unit test, which will execute on the development machine (host).
  *

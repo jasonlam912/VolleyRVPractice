@@ -15,4 +15,7 @@
     <string name="close_drawer">Close</string>
     <string name="video_views">%s views</string>
     <string name="video_time_length">%1$s:%02d</string>
+    <string name="about_us_content">I am reaching out to our community to ask for your support in keeping our cookbook app running smoothly and providing you with the best possible cooking experience. Our app has been helping home cooks around the world to discover new recipes, plan their meals, and improve their cooking skills.\n\nAs a developer, I rely on donations from our users to continue developing and maintaining the app. Your contribution will help us cover the cost of hosting the app, improving its features, and adding new recipes to the database.</string>
+    <string name="about_us_title">Who Am I</string>
+    <string name="about_us_donate">DONATE HKD 40</string>
 </resources>

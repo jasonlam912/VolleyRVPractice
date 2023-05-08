@@ -1,6 +1,5 @@
-package com.jasonstudio.cookbook2
+package com.jasonstudio.cookbook2.view.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.jasonstudio.cookbook2.RecipeAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,8 +9,6 @@ import com.google.android.material.navigation.NavigationView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.os.Bundle
 import com.jasonstudio.cookbook2.R
-import com.jasonstudio.cookbook2.MainActivity
-import com.jasonstudio.cookbook2.Recipe.RecipeModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import androidx.core.view.GravityCompat
@@ -25,7 +22,6 @@ import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
-import com.jasonstudio.cookbook2.FavouriteRecipe.FavouriteRecipeActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import com.jasonstudio.cookbook2.helper.SharedPref
@@ -134,15 +130,16 @@ class MainActivity : MessagingActivity() {
         nv.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             drawerLayout.closeDrawer(GravityCompat.START)
             when (item.itemId) {
-                R.id.menu_find_recipe ->                         //item.setChecked(true);
+                R.id.menu_find_recipe ->
                     return@OnNavigationItemSelectedListener true
                 R.id.menu_favourite_recipe -> {
-                    //item.setChecked(true);
                     startActivity(Intent(this@MainActivity, FavouriteRecipeActivity::class.java))
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.menu_about_us ->                         //item.setChecked(true);
+                R.id.menu_about_us -> {
+                    startActivity(Intent(this@MainActivity, AboutUsActivity::class.java))
                     return@OnNavigationItemSelectedListener true
+                }
             }
             false
         })

@@ -1,4 +1,4 @@
-package com.jasonstudio.cookbook2
+package com.jasonstudio.cookbook2.view.activity
 
 import android.content.pm.PackageManager
 import android.os.Build
