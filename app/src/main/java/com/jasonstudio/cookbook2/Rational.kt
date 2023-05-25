@@ -1,7 +1,5 @@
 package com.jasonstudio.cookbook2
 
-import kotlin.jvm.JvmStatic
-
 class Rational {
     private var num: Int
     private var denom: Int

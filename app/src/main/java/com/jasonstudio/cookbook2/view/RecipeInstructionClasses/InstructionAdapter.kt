@@ -1,20 +1,17 @@
 package com.jasonstudio.cookbook2.view.RecipeInstructionClasses
 
 import android.content.Context
-import org.json.JSONArray
-import androidx.recyclerview.widget.RecyclerView
-import com.jasonstudio.cookbook2.view.RecipeInstructionClasses.InstructionIngredientAdapter
-import com.jasonstudio.cookbook2.view.RecipeInstructionClasses.InstructionEquipmentAdapter
-import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
-import com.jasonstudio.cookbook2.R
-import org.json.JSONObject
-import androidx.recyclerview.widget.LinearLayoutManager
-import org.json.JSONException
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import java.util.ArrayList
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.jasonstudio.cookbook2.R
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 
 class InstructionAdapter(private val ct: Context, var data: JSONArray) :
     RecyclerView.Adapter<InstructionAdapter.ViewHolder>() {

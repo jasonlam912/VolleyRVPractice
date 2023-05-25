@@ -2,35 +2,26 @@ package com.jasonstudio.cookbook2.view.RecipeNutritionClasses
 
 import android.graphics.Color
 import android.os.Bundle
-import com.jasonstudio.cookbook2.view.RecipeNutritionClasses.NutritionFragment
-import com.github.mikephil.charting.charts.HorizontalBarChart
-import com.github.mikephil.charting.data.BarEntry
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.android.volley.Request
-import com.jasonstudio.cookbook2.R
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.Volley
-import com.android.volley.toolbox.JsonObjectRequest
-import org.json.JSONObject
-import org.json.JSONException
-import com.android.volley.VolleyError
+import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.Legend
-import kotlin.Throws
-import org.json.JSONArray
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.LegendEntry
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.gson.Gson
 import com.jasonstudio.cookbook2.Network.SpoonacularService
+import com.jasonstudio.cookbook2.R
 import kotlinx.coroutines.launch
-import java.util.ArrayList
+import org.json.JSONException
+import org.json.JSONObject
 
 /**
  * A simple [Fragment] subclass.
@@ -38,9 +29,6 @@ import java.util.ArrayList
  * create an instance of this fragment.
  */
 class NutritionFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     private lateinit var recipeId: String
     private lateinit var mainChart: HorizontalBarChart
@@ -90,26 +78,26 @@ class NutritionFragment : Fragment() {
         val bad = response.getJSONArray("bad")
         for (i in 0 until bad.length()) {
             val nutritionData = bad.getJSONObject(i)
-            mainBarEntries!!.add(
+            mainBarEntries.add(
                 BarEntry(
                     i.toFloat(),
                     nutritionData.getDouble("percentOfDailyNeeds").toFloat(),
                     nutritionData.getString("amount")
                 )
             )
-            mainBarLabels!!.add(nutritionData.getString("title"))
+            mainBarLabels.add(nutritionData.getString("title"))
         }
         val good = response.getJSONArray("good")
         for (i in 0 until good.length()) {
             val nutritionData = good.getJSONObject(i)
-            otherBarEntries!!.add(
+            otherBarEntries.add(
                 BarEntry(
                     i.toFloat(),
                     nutritionData.getDouble("percentOfDailyNeeds").toFloat(),
                     nutritionData.getString("amount")
                 )
             )
-            otherBarLabels!!.add(nutritionData.getString("title"))
+            otherBarLabels.add(nutritionData.getString("title"))
         }
     }
 
@@ -125,10 +113,10 @@ class NutritionFragment : Fragment() {
                 return java.lang.Float.toString(barEntry.y) + "% (" + barEntry.data as String + ")"
             }
         })
-        mainChart!!.data = data
-        mainChart!!.xAxis.valueFormatter = IndexAxisValueFormatter(mainBarLabels)
-        mainChart!!.xAxis.labelCount = mainBarEntries!!.size
-        mainChart!!.axisLeft.axisMaximum = maxBarLength(mainBarEntries) + 40f
+        mainChart.data = data
+        mainChart.xAxis.valueFormatter = IndexAxisValueFormatter(mainBarLabels)
+        mainChart.xAxis.labelCount = mainBarEntries.size
+        mainChart.axisLeft.axisMaximum = maxBarLength(mainBarEntries) + 40f
         chartParameterSetting(mainChart, Color.YELLOW)
     }
 
@@ -144,10 +132,10 @@ class NutritionFragment : Fragment() {
                 return java.lang.Float.toString(barEntry.y) + "% (" + barEntry.data as String + ")"
             }
         })
-        otherChart!!.data = data
-        otherChart!!.xAxis.valueFormatter = IndexAxisValueFormatter(otherBarLabels)
-        otherChart!!.xAxis.labelCount = otherBarEntries!!.size
-        otherChart!!.axisLeft.axisMaximum = maxBarLength(otherBarEntries) + 40f
+        otherChart.data = data
+        otherChart.xAxis.valueFormatter = IndexAxisValueFormatter(otherBarLabels)
+        otherChart.xAxis.labelCount = otherBarEntries.size
+        otherChart.axisLeft.axisMaximum = maxBarLength(otherBarEntries) + 40f
         chartParameterSetting(otherChart, Color.GREEN)
     }
 

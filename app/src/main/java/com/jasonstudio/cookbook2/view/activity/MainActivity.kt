@@ -1,19 +1,8 @@
 package com.jasonstudio.cookbook2.view.activity
 
-import androidx.recyclerview.widget.RecyclerView
-import com.jasonstudio.cookbook2.RecipeAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.jasonstudio.cookbook2.Recipe.RecipeViewModel
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import android.os.Bundle
-import com.jasonstudio.cookbook2.R
-import androidx.lifecycle.ViewModelProvider
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import androidx.core.view.GravityCompat
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -22,23 +11,32 @@ import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
-import com.jasonstudio.cookbook2.helper.SharedPref
-import java.util.ArrayList
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
+import com.google.android.material.navigation.NavigationView
+import com.jasonstudio.cookbook2.R
+import com.jasonstudio.cookbook2.Recipe.RecipeViewModel
+import com.jasonstudio.cookbook2.RecipeAdapter
 
-class MainActivity : MessagingActivity() {
+class MainActivity : WebsocketActivity() {
     lateinit var rv: RecyclerView
     lateinit var adapter: RecipeAdapter
     lateinit var manager: LinearLayoutManager
-    lateinit private var recipeViewModel: RecipeViewModel
-    lateinit private var drawerLayout: DrawerLayout
-    lateinit private var nv: NavigationView
-    lateinit private var toolbar: Toolbar
+    private lateinit var recipeViewModel: RecipeViewModel
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var nv: NavigationView
+    private lateinit var toolbar: Toolbar
 
     //volley things
-    lateinit private var loadingRecipePB: ProgressBar
-    lateinit private var swipeRecipeRVContainer: SwipeRefreshLayout
+    private lateinit var loadingRecipePB: ProgressBar
+    private lateinit var swipeRecipeRVContainer: SwipeRefreshLayout
 
     companion object {
         var searchString: String? = null
@@ -48,47 +46,46 @@ class MainActivity : MessagingActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppThemeMain)
         super.onCreate(savedInstanceState)
-        SharedPref.init(applicationContext)
         setContentView(R.layout.activity_main)
         initializeDrawerLayout()
         orientation = resources.configuration.orientation
         loadingRecipePB = findViewById(R.id.loading_recipe_progress_bar)
-        loadingRecipePB.setVisibility(View.INVISIBLE)
+        loadingRecipePB.visibility = View.INVISIBLE
         swipeRecipeRVContainer = findViewById(R.id.swipe_recipe_rv_container)
         rv = findViewById(R.id.recipe_rv)
 
         adapter = RecipeAdapter(this, ArrayList())
-        rv.setAdapter(adapter)
+        rv.adapter = adapter
         manager = getManager(orientation)
-        rv.setLayoutManager(manager)
+        rv.layoutManager = manager
         rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val lastVisiblePosition = manager!!.findLastVisibleItemPosition()
+                val lastVisiblePosition = manager.findLastVisibleItemPosition()
                 //Log.d("lastPos", Boolean.toString(lastVisiblePosition == recipeViewModel.getData().getValue().size()-1));
-                if (!recipeViewModel!!.isLoading.value!! && lastVisiblePosition == recipeViewModel!!.data.value!!.size - 1) {
+                if (!recipeViewModel.isLoading.value!! && lastVisiblePosition == recipeViewModel.data.value!!.size - 1) {
                     //Log.d("isSearch", Boolean.toString(recipeViewModel.isSearch));
-                    recipeViewModel!!.putRecipe(this@MainActivity, searchString)
+                    recipeViewModel.putRecipe(this@MainActivity, searchString)
                 }
             }
         }
         )
         recipeViewModel = ViewModelProvider(this).get(RecipeViewModel::class.java)
-        recipeViewModel!!.data.observe(this) { recipeModels -> adapter!!.modifyData(recipeModels) }
+        recipeViewModel.data.observe(this) { recipeModels -> adapter.modifyData(recipeModels) }
         swipeRecipeRVContainer.setOnRefreshListener(OnRefreshListener {
-            recipeViewModel!!.resetData(this@MainActivity)
-            recipeViewModel!!.putRandomRecipe(this@MainActivity)
+            recipeViewModel.resetData(this@MainActivity)
+            recipeViewModel.putRandomRecipe(this@MainActivity)
         })
-        recipeViewModel!!.isLoading.observe(this) { aBoolean ->
-            swipeRecipeRVContainer.setRefreshing(aBoolean!!)
+        recipeViewModel.isLoading.observe(this) { aBoolean ->
+            swipeRecipeRVContainer.isRefreshing = aBoolean!!
             /*if(aBoolean){
                         loadingRecipePB.setVisibility(View.VISIBLE);
                     }else{
                         loadingRecipePB.setVisibility(View.INVISIBLE);
                     }*/
         }
-        if (recipeViewModel!!.data.value!!.size == 2) {
-            recipeViewModel!!.putRandomRecipe(this@MainActivity)
+        if (recipeViewModel.data.value!!.size == 2) {
+            recipeViewModel.putRandomRecipe(this@MainActivity)
         }
     }
 
@@ -100,7 +97,7 @@ class MainActivity : MessagingActivity() {
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchString = query
                 Log.d("onQueryTextSubmit", query)
-                recipeViewModel!!.putSearchRecipe(this@MainActivity, query)
+                recipeViewModel.putSearchRecipe(this@MainActivity, query)
                 return true
             }
 
@@ -116,7 +113,7 @@ class MainActivity : MessagingActivity() {
         nv = findViewById(R.id.navigation_view_drawer)
         toolbar = findViewById(R.id.toolbar2)
         //toolbar.setNavigationIcon(R.drawable.recipes);
-        toolbar.setTitle("")
+        toolbar.title = ""
         setSupportActionBar(toolbar)
         val toggle = ActionBarDrawerToggle(
             this,
@@ -147,8 +144,8 @@ class MainActivity : MessagingActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.refresh_recipe_button) {
-            recipeViewModel!!.resetData(this)
-            recipeViewModel!!.putRandomRecipe(this@MainActivity)
+            recipeViewModel.resetData(this)
+            recipeViewModel.putRandomRecipe(this@MainActivity)
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -161,7 +158,7 @@ class MainActivity : MessagingActivity() {
             val manager = GridLayoutManager(this, 2)
             manager.spanSizeLookup = object : SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
-                    return if (adapter!!.getItemViewType(position) == 0) 1 else 2
+                    return if (adapter.getItemViewType(position) == 0) 1 else 2
                 }
             }
             manager

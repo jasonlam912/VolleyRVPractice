@@ -11,5 +11,19 @@ data class Video (
     val views: Long,
     @field:Json(name = "youTubeId")
     val youTubeID: String
-)
+) {
+    companion object {
+        fun getDemo(): Video {
+            return Video(
+                title = "Keto Diet Update!!",
+                shortTitle = "Keto Diet Update",
+                youTubeID = "rKCOQU3ptIE",
+                rating = 1.0,
+                views = 537,
+                thumbnail = "https://i.ytimg.com/vi/rKCOQU3ptIE/mqdefault.jpg",
+                length = 389L
+            )
+        }
+    }
+}
 

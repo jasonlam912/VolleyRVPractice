@@ -2,7 +2,6 @@ package com.jasonstudio.cookbook2.ext
 
 import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
-import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
@@ -61,5 +60,4 @@ class AnimPropertyEvaluator: TypeEvaluator<AnimProperty> {
         LogUtil.log(res)
         return res
     }
-
 }

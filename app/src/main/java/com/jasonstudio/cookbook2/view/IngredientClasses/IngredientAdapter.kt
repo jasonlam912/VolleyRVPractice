@@ -1,27 +1,26 @@
 package com.jasonstudio.cookbook2.view.IngredientClasses
 
 import android.content.Context
-import com.jasonstudio.cookbook2.Network.NetworkManager.Companion.getInstance
-import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
 import android.view.LayoutInflater
-import com.jasonstudio.cookbook2.R
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import android.widget.TextView
-import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
-import java.util.HashMap
+import com.jasonstudio.cookbook2.R
+import com.jasonstudio.cookbook2.ext.addInterceptor
 
 class IngredientAdapter(
     private val ct: Context?,
     private var igdData: HashMap<String, MutableList<String>>?,
-    private val recipeId: String?
 ) : RecyclerView.Adapter<IngredientAdapter.ViewHolder>() {
-    fun ModifyData(igdData: HashMap<String, MutableList<String>>?) {
+    fun modifyData(igdData: HashMap<String, MutableList<String>>?) {
         this.igdData = igdData
-        notifyDataSetChanged()
+        if (igdData != null) {
+            notifyItemRangeChanged(0,igdData.size)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,6 +34,7 @@ class IngredientAdapter(
         holder.ingredientAmount.text = igdData!!["ingredient_amount"]!![position]
         Glide.with(ct!!)
             .load(igdData!!["ingredient_image_url"]!![position])
+            .addInterceptor()
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.ingredientImage)
     }

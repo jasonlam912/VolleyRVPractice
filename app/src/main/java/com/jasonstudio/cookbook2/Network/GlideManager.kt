@@ -1,20 +1,12 @@
 package com.jasonstudio.cookbook2.Network
 
 import android.content.Context
-import com.bumptech.glide.request.target.CustomTarget
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import android.graphics.drawable.Drawable
-import com.jasonstudio.cookbook2.R
-import com.android.volley.toolbox.Volley
-import com.jasonstudio.cookbook2.Network.CallbackListener
-import com.android.volley.toolbox.JsonObjectRequest
-import org.json.JSONObject
-import org.json.JSONException
-import com.android.volley.VolleyError
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import kotlin.Throws
 
 object GlideManager {
     fun loadImage(
@@ -23,7 +15,8 @@ object GlideManager {
         i: Int,
         listener: GlideCallbackListener
     ): CustomTarget<Bitmap> {
-        return Glide.with(ct!!).asBitmap().load(url).diskCacheStrategy(DiskCacheStrategy.NONE)
+        return Glide.with(ct!!).asBitmap().load(url)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(object : CustomTarget<Bitmap>(556, 370) {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     //Log.d("onResourceReady",resource.toString();

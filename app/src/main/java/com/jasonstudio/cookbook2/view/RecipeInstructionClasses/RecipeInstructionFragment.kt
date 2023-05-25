@@ -1,26 +1,21 @@
 package com.jasonstudio.cookbook2.view.RecipeInstructionClasses
 import android.os.Bundle
 import android.util.Log
-import com.jasonstudio.cookbook2.view.RecipeInstructionClasses.RecipeInstructionFragment
-import org.json.JSONArray
-import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.RequestQueue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.Request
-import com.jasonstudio.cookbook2.R
-import org.json.JSONObject
-import org.json.JSONException
-import com.android.volley.toolbox.Volley
-import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.VolleyError
+import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.RequestQueue
 import com.google.gson.Gson
 import com.jasonstudio.cookbook2.Network.SpoonacularService
+import com.jasonstudio.cookbook2.R
 import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 
 /**
  * A simple [Fragment] subclass.
@@ -28,9 +23,6 @@ import kotlinx.coroutines.launch
  * create an instance of this fragment.
  */
 class RecipeInstructionFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     private lateinit var data: JSONArray
     private lateinit var outerRv: RecyclerView
@@ -47,9 +39,9 @@ class RecipeInstructionFragment : Fragment() {
         val manager = LinearLayoutManager(context)
         val view = inflater.inflate(R.layout.fragment_recipe_instruction, container, false)
         outerRv = view.findViewById(R.id.outer_rv)
-        outerRv.setLayoutManager(manager)
-        adapter = InstructionAdapter(requireContext(), data!!)
-        outerRv.setAdapter(adapter)
+        outerRv.layoutManager = manager
+        adapter = InstructionAdapter(requireContext(), data)
+        outerRv.adapter = adapter
 
 
         // Inflate the layout for this fragment

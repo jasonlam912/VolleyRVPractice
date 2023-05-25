@@ -1,15 +1,12 @@
 package com.jasonstudio.cookbook2.view.videos
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.jasonstudio.cookbook2.EndViewHolder
 import com.jasonstudio.cookbook2.LoadViewHolder
 import com.jasonstudio.cookbook2.R
-import com.jasonstudio.cookbook2.RecipeAdapter
 import com.jasonstudio.cookbook2.databinding.RowEndBinding
 import com.jasonstudio.cookbook2.databinding.RowLoadingBinding
 import com.jasonstudio.cookbook2.databinding.RowVideoBinding
@@ -68,7 +65,6 @@ class VideosAdapter(val listener: OnVideoClickListener):
     fun addData(newData: List<Video>, from: Int, count: Int, isLastData: Boolean) {
         this.data.addAll(newData)
         this.isLastData = isLastData
-        notifyDataSetChanged()
         notifyItemRangeChanged(0,data.size)
 //        notifyItemRangeChanged(from, count)
     }

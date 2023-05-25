@@ -1,18 +1,10 @@
 package com.jasonstudio.cookbook2.FavouriteRecipeModel
 
 import android.content.Context
-import androidx.room.PrimaryKey
-import androidx.room.Dao
-import androidx.room.OnConflictStrategy
-import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
 import androidx.room.Database
-import androidx.room.RoomDatabase
-import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeDao
-import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeDatabase
 import androidx.room.Room
-import androidx.lifecycle.AndroidViewModel
-import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeRepository
-import android.os.AsyncTask
+import androidx.room.RoomDatabase
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeDatabase
 
 @Database(entities = [FavouriteRecipe::class], version = 1)
 abstract class FavouriteRecipeDatabase : RoomDatabase() {

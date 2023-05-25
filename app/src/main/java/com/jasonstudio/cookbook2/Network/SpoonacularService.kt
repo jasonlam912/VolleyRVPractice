@@ -1,13 +1,8 @@
 package com.jasonstudio.cookbook2.Network
 
-import androidx.lifecycle.LiveData
 import com.jasonstudio.cookbook2.helper.SharedPref
 import com.jasonstudio.cookbook2.model.*
-import com.jasonstudio.cookbook2.util.LogUtil
-import okhttp3.HttpUrl
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -76,55 +71,23 @@ interface SpoonacularService {
             service?.let {
                 return it
             } ?: run {
-                service = getRetrofit().create(SpoonacularService::class.java)
+                service = getRetrofit(
+                    "https://api.spoonacular.com"
+                ).create(SpoonacularService::class.java)
                 return service!!
             }
         }
-        private fun getRetrofit(): Retrofit = Retrofit.Builder()
-            .client(getOkHttpClient())
-            .baseUrl("https://api.spoonacular.com")
+        fun getRetrofit(url: String): Retrofit = Retrofit.Builder()
+            .client(getSpoonacularOkHttpClient())
+            .baseUrl(url)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
 
-        private fun getOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+        fun getSpoonacularOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
             .connectTimeout(100, TimeUnit.SECONDS)
             .readTimeout(100, TimeUnit.SECONDS)
-            .addInterceptor(getInterceptor())
-            .addInterceptor(getReloadInterceptor())
+            .addInterceptor(InterceptorFactory.getInterceptor())
+            .addInterceptor(InterceptorFactory.getReloadInterceptor())
             .build()
-
-        private fun getInterceptor() = object : Interceptor {
-            override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-                val original: Request = chain.request()
-                val originalHttpUrl: HttpUrl = original.url()
-                val url = originalHttpUrl.newBuilder()
-                    .addQueryParameter("apiKey", apiKey)
-                    .build()
-                val requestBuilder: Request.Builder = original.newBuilder()
-                    .url(url)
-                val request: Request = requestBuilder.build()
-                return chain.proceed(request)
-            }
-        }
-
-        private fun getReloadInterceptor() = Interceptor {
-            val request = it.request()
-            LogUtil.log(SharedPref.getApiKeyIndex(), request.url().url())
-            var response: okhttp3.Response = it.proceed(request)
-            while (response.code() == 402) {
-                SharedPref.addApiKeyIndex()
-                val newUrl = request
-                    .url()
-                    .newBuilder()
-                    .setQueryParameter("apiKey", apiKey)
-                    .build()
-                val newRequest = request.newBuilder()
-                    .url(newUrl)
-                    .build()
-                response.close()
-                response = it.proceed(newRequest)
-            }
-            response
-        }
     }
 }

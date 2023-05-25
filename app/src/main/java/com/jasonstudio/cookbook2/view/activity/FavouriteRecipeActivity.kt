@@ -1,25 +1,23 @@
 package com.jasonstudio.cookbook2.view.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeViewModel
-import androidx.recyclerview.widget.RecyclerView
-import com.jasonstudio.cookbook2.RecipeAdapter
-import com.jasonstudio.cookbook2.R
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.jasonstudio.cookbook2.Recipe.RecipeModel
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.ViewModelProvider
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.android.schedulers.AndroidSchedulers
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeViewModel
+import com.jasonstudio.cookbook2.R
 import com.jasonstudio.cookbook2.Recipe.JsonData2Recipe
-import java.util.ArrayList
+import com.jasonstudio.cookbook2.Recipe.RecipeModel
+import com.jasonstudio.cookbook2.RecipeAdapter
+import com.jasonstudio.cookbook2.databinding.ActivityFavouriteRecipeBinding
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
-class FavouriteRecipeActivity : AppCompatActivity() {
+class FavouriteRecipeActivity : BaseActivity<ActivityFavouriteRecipeBinding>(ActivityFavouriteRecipeBinding::inflate) {
     private lateinit var fRViewModel: FavouriteRecipeViewModel
-    private lateinit var rv: RecyclerView
     private lateinit var adapter: RecipeAdapter
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.favourite_recipe_menu, menu)
@@ -28,7 +26,7 @@ class FavouriteRecipeActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.delete_all_recipe) {
-            fRViewModel!!.deleteAll()
+            fRViewModel.deleteAll()
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -36,18 +34,18 @@ class FavouriteRecipeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_favourite_recipe)
         title = "Favourite Recipes"
-        rv = findViewById(R.id.favourite_recipe_rv)
         adapter = RecipeAdapter(this, ArrayList())
-        rv.adapter = adapter
-        rv.layoutManager = LinearLayoutManager(
-            this@FavouriteRecipeActivity,
-            RecyclerView.VERTICAL,
-            false
-        )
-        fRViewModel = ViewModelProvider(this).get(FavouriteRecipeViewModel::class.java)
-        val d = fRViewModel.all?.subscribeOn(Schedulers.io())
+        binding.favouriteRecipeRv.apply {
+            adapter = this@FavouriteRecipeActivity.adapter
+            layoutManager = LinearLayoutManager(
+                this@FavouriteRecipeActivity,
+                RecyclerView.VERTICAL,
+                false
+            )
+        }
+        fRViewModel = ViewModelProvider(this)[FavouriteRecipeViewModel::class.java]
+        val d = fRViewModel.all.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe({ favouriteRecipes ->
                 val recipeList: MutableList<RecipeModel> = ArrayList()
@@ -59,7 +57,7 @@ class FavouriteRecipeActivity : AppCompatActivity() {
                     val r = RecipeModel(recipe.id, recipe.title, url, 0, true, null)
                     recipeList.add(r)
                 }
-                adapter!!.modifyData(recipeList)
+                adapter.modifyData(recipeList)
             }, { throwable -> throwable.printStackTrace() })
     }
 

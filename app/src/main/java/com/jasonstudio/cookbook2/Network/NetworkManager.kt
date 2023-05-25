@@ -1,32 +1,22 @@
 package com.jasonstudio.cookbook2.Network
 
 import android.content.Context
-import com.jasonstudio.cookbook2.Network.GlideCallbackListener
-import com.bumptech.glide.request.target.CustomTarget
 import android.graphics.Bitmap
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import android.graphics.drawable.Drawable
 import android.util.LruCache
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.jasonstudio.cookbook2.Network.NetworkManager
-import com.jasonstudio.cookbook2.R
-import com.android.volley.toolbox.Volley
-import com.jasonstudio.cookbook2.Network.CallbackListener
-import com.android.volley.toolbox.JsonObjectRequest
-import org.json.JSONObject
-import org.json.JSONException
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.ImageLoader
-import kotlin.Throws
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.jasonstudio.cookbook2.R
+import org.json.JSONException
 
 class NetworkManager private constructor(val ctx: Context) {
     private var requestQueue: RequestQueue?
     val imageLoader: ImageLoader
 
     init {
-        api = ctx.getResources().getString(R.string.apiKeyUsing)
+        api = ctx.resources.getString(R.string.apiKeyUsing)
         requestQueue = getRequestQueue()
         imageLoader = ImageLoader(requestQueue,
             object : ImageLoader.ImageCache {
@@ -45,7 +35,7 @@ class NetworkManager private constructor(val ctx: Context) {
         if (requestQueue == null) {
             // getApplicationContext() is key, it keeps you from leaking the
             // Activity or BroadcastReceiver if someone passes one in.
-            requestQueue = Volley.newRequestQueue(ctx.getApplicationContext())
+            requestQueue = Volley.newRequestQueue(ctx.applicationContext)
         }
         return requestQueue
     }

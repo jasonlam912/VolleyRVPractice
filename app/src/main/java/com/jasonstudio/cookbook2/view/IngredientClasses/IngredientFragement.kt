@@ -1,35 +1,23 @@
 package com.jasonstudio.cookbook2.view.IngredientClasses
 
 import android.content.res.Configuration
-import com.jasonstudio.cookbook2.Network.NetworkManager.Companion.getInstance
-import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
-import android.view.LayoutInflater
-import com.jasonstudio.cookbook2.R
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import android.widget.TextView
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.jasonstudio.cookbook2.view.IngredientClasses.IngredientFragement
-import com.jasonstudio.cookbook2.view.IngredientClasses.IngredientAdapter
-import com.android.volley.RequestQueue
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager
-import com.android.volley.Request
-import com.jasonstudio.cookbook2.Network.NetworkManager
-import com.android.volley.toolbox.JsonObjectRequest
-import org.json.JSONObject
-import org.json.JSONException
-import com.android.volley.VolleyError
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.RequestQueue
+import com.jasonstudio.cookbook2.Network.NetworkManager.Companion.getInstance
 import com.jasonstudio.cookbook2.Network.SpoonacularService
+import com.jasonstudio.cookbook2.R
 import com.jasonstudio.cookbook2.model.IngredientsResponse
 import kotlinx.coroutines.launch
-import kotlin.Throws
-import org.json.JSONArray
+import org.json.JSONException
 import java.util.*
 
 /**
@@ -38,9 +26,6 @@ import java.util.*
  * create an instance of this fragment.
  */
 class IngredientFragement : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     private var recipe_id: String? = null
     var adapter: IngredientAdapter? = null
@@ -51,7 +36,7 @@ class IngredientFragement : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         recipe_id = requireArguments().getString("recipe_id")
         recipeData = HashMap()
         recipeData["ingredient_image_url"] = ArrayList()
@@ -81,7 +66,7 @@ class IngredientFragement : Fragment() {
                 "amount3"
             )
         )
-        adapter = IngredientAdapter(context, recipeData, recipe_id)
+        adapter = IngredientAdapter(context, recipeData)
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             rv.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         } else {
@@ -100,7 +85,7 @@ class IngredientFragement : Fragment() {
             )
             response.body()?.let {
                 readIngredient(it)
-                adapter!!.ModifyData(recipeData)
+                adapter!!.modifyData(recipeData)
             }
         }
     }

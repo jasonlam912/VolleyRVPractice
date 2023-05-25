@@ -1,18 +1,19 @@
 package com.jasonstudio.cookbook2.view.RecipeInstructionClasses
 
 import android.content.Context
-import org.json.JSONArray
-import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
-import com.jasonstudio.cookbook2.R
-import org.json.JSONObject
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.jasonstudio.cookbook2.R
+import com.jasonstudio.cookbook2.ext.addInterceptor
+import org.json.JSONArray
 import org.json.JSONException
-import android.widget.TextView
+import org.json.JSONObject
 
 class InstructionIngredientAdapter(private val ct: Context, private val igdList: JSONArray) :
     RecyclerView.Adapter<InstructionIngredientAdapter.ViewHolder>() {
@@ -31,6 +32,7 @@ class InstructionIngredientAdapter(private val ct: Context, private val igdList:
             holder.igdTitle.text = igdTitleString
             Glide.with(ct)
                 .load(igdImageUrl)
+                .addInterceptor()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.igdImage)
         } catch (e: JSONException) {

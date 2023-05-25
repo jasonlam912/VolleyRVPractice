@@ -10,7 +10,6 @@ import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ToggleButton
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.commit
@@ -24,7 +23,10 @@ import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
 import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeViewModel
 import com.jasonstudio.cookbook2.R
 import com.jasonstudio.cookbook2.databinding.ActivityRecipeBinding
-import com.jasonstudio.cookbook2.ext.*
+import com.jasonstudio.cookbook2.ext.addInterceptor
+import com.jasonstudio.cookbook2.ext.hideStatusBar
+import com.jasonstudio.cookbook2.ext.showStatusBar
+import com.jasonstudio.cookbook2.ext.toPx
 import com.jasonstudio.cookbook2.model.Video
 import com.jasonstudio.cookbook2.view.IngredientClasses.IngredientFragement
 import com.jasonstudio.cookbook2.view.RecipeInstructionClasses.RecipeInstructionFragment
@@ -41,16 +43,16 @@ class RecipeActivity : BaseActivity<ActivityRecipeBinding>(ActivityRecipeBinding
     //Toolbar UI objecct ---------------------------------------------------------------------------
     //Tab UI object---------------------------------------------------------------------------------
     private var fragmentTitles: MutableList<String> = ArrayList()
-    lateinit private var recipeInstructionFragment: RecipeInstructionFragment
-    lateinit private var ingredientFragement: IngredientFragement
-    lateinit private var nutritionFragment: NutritionFragment
+    private lateinit var recipeInstructionFragment: RecipeInstructionFragment
+    private lateinit var ingredientFragement: IngredientFragement
+    private lateinit var nutritionFragment: NutritionFragment
 
     //Tab UI object---------------------------------------------------------------------------------
     //Data Object-----------------------------------------------------------------------------------
-    lateinit private var recipe_id: String
-    lateinit private var recipe_title: String
+    private lateinit var recipe_id: String
+    private lateinit var recipe_title: String
     private var is_favourite_recipe = false
-    lateinit private var fRViewModel: FavouriteRecipeViewModel
+    private lateinit var fRViewModel: FavouriteRecipeViewModel
     //Data Object-----------------------------------------------------------------------------------
 
     private var isVideoExpand = false
@@ -170,6 +172,7 @@ class RecipeActivity : BaseActivity<ActivityRecipeBinding>(ActivityRecipeBinding
         }
         binding.layoutRecipe.recipeImage.apply {
             Glide.with(this).load(subImageUrl1 + recipe_id + subImageUrl2)
+                .addInterceptor()
                 .diskCacheStrategy(DiskCacheStrategy.ALL).into(this)
         }
         binding.layoutRecipe.toolBar.apply {
@@ -177,7 +180,7 @@ class RecipeActivity : BaseActivity<ActivityRecipeBinding>(ActivityRecipeBinding
         }
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
-            it.setTitle(recipe_title)
+            it.title = recipe_title
         }
     }
 
@@ -189,8 +192,8 @@ class RecipeActivity : BaseActivity<ActivityRecipeBinding>(ActivityRecipeBinding
         button.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 val recipe = FavouriteRecipe(recipe_id, recipe_title)
-                recipe.primaryKey = Integer.valueOf(recipe_id!!)
-                fRViewModel!!.insert(recipe)
+                recipe.primaryKey = Integer.valueOf(recipe_id)
+                fRViewModel.insert(recipe)
                 Snackbar.make(
                     window.decorView,
                     "\'$recipe_title\' is added to the favourite recipe list.",
@@ -198,8 +201,8 @@ class RecipeActivity : BaseActivity<ActivityRecipeBinding>(ActivityRecipeBinding
                 ).show()
             } else {
                 val recipe = FavouriteRecipe(recipe_id, recipe_title)
-                recipe.primaryKey = Integer.valueOf(recipe_id!!)
-                fRViewModel!!.delete(recipe)
+                recipe.primaryKey = Integer.valueOf(recipe_id)
+                fRViewModel.delete(recipe)
                 Snackbar.make(
                     window.decorView,
                     "\'$recipe_title\' is deleted to the favourite recipe list.",

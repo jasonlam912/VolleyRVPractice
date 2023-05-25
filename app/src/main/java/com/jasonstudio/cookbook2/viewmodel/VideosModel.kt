@@ -37,11 +37,13 @@ class VideosModel: ViewModel() {
         }
         viewModelScope.launch {
             isLoading = true
+            LogUtil.log(Thread.currentThread().name)
             val result = service.getVideos(
                 query = this@VideosModel.query!!,
                 offset = offset,
                 number = maxBatchSize,
             )
+            LogUtil.log(Thread.currentThread().name)
             if (result.isSuccessful) {
                 result.body()?.let {
                     if (it.totalResults.toInt() == 0) {

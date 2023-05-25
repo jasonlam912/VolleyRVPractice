@@ -1,28 +1,46 @@
 package com.jasonstudio.cookbook2.view.activity
 
-import android.content.Context
 import android.os.Bundle
-import android.util.AttributeSet
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
+import android.os.StrictMode.VmPolicy
 import android.view.LayoutInflater
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.jasonstudio.cookbook2.Inflate
+
 
 abstract class BaseActivity<VB: ViewBinding> (
     private val inflate: (LayoutInflater) -> VB
-) : AppCompatActivity() {
+) : WebsocketActivity() {
     private var _binding: VB? = null
     val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = inflate.invoke(layoutInflater)
+        StrictMode.setThreadPolicy(
+            ThreadPolicy.Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectAll() // or .detectAll() for all detectable problems
+                .penaltyLog()
+                .build()
+        )
+        StrictMode.setVmPolicy(
+            VmPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build()
+        )
         setContentView(binding.root)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 }

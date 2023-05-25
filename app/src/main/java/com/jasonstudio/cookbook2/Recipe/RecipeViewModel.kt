@@ -1,20 +1,17 @@
 package com.jasonstudio.cookbook2.Recipe
 
 import android.content.Context
-import com.jasonstudio.cookbook2.Recipe.JsonData2Recipe.jsonObject2RandomRecipe
-import com.jasonstudio.cookbook2.Recipe.JsonData2Recipe.jsonObject2SearchRecipe
 import android.graphics.Bitmap
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.Glide
-import com.jasonstudio.cookbook2.Network.*
+import com.bumptech.glide.request.target.CustomTarget
+import com.jasonstudio.cookbook2.Network.GlideCallbackListener
+import com.jasonstudio.cookbook2.Network.GlideManager
+import com.jasonstudio.cookbook2.Network.SpoonacularService
 import kotlinx.coroutines.launch
-import org.json.JSONObject
-import retrofit2.http.Query
-import java.util.ArrayList
 
 class RecipeViewModel : ViewModel() {
     val data: MutableLiveData<MutableList<RecipeModel>>

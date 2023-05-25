@@ -4,9 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import androidx.core.content.getSystemService
-import com.jasonstudio.cookbook2.R
 import com.jasonstudio.cookbook2.databinding.LayoutUrlImageViewBinding
+import com.jasonstudio.cookbook2.util.LogUtil
 
 class UrlImageView @JvmOverloads constructor(
     context: Context,
@@ -22,11 +21,14 @@ class UrlImageView @JvmOverloads constructor(
         return _binding!!
     }
 
-
     private fun initView() {
         _binding = LayoutUrlImageViewBinding.inflate(
             LayoutInflater.from(context),
             this
         )
+    }
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        LogUtil.log("here")
     }
 }

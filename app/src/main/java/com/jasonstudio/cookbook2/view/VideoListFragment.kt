@@ -1,39 +1,29 @@
 package com.jasonstudio.cookbook2.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.jasonstudio.cookbook2.BaseFragment
 import com.jasonstudio.cookbook2.databinding.FragmentVideoListBinding
 import com.jasonstudio.cookbook2.model.Video
 import com.jasonstudio.cookbook2.view.videos.OnVideoClickListener
 import com.jasonstudio.cookbook2.view.videos.VideosAdapter
 import com.jasonstudio.cookbook2.viewmodel.VideosModel
 
-class VideoListFragment: Fragment(), OnVideoClickListener {
-    private var _binding: FragmentVideoListBinding? = null
-    private val binding: FragmentVideoListBinding
-    get() = _binding!!
+class VideoListFragment: BaseFragment<FragmentVideoListBinding>(FragmentVideoListBinding::inflate), OnVideoClickListener {
     private val model: VideosModel by viewModels()
     private lateinit var adapter: VideosAdapter
     private val manager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     var onVideoClickListener: OnVideoClickListener? = null
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentVideoListBinding.inflate(inflater)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupView()
         bind()
-        return binding.root
     }
-
     private fun bind() {
         model.videos.observe(viewLifecycleOwner) {
             adapter.addData(it, model.offset, model.batchSize, model.isLastData)

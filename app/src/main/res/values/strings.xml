@@ -18,4 +18,6 @@
     <string name="about_us_content">I am reaching out to our community to ask for your support in keeping our cookbook app running smoothly and providing you with the best possible cooking experience. Our app has been helping home cooks around the world to discover new recipes, plan their meals, and improve their cooking skills.\n\nAs a developer, I rely on donations from our users to continue developing and maintaining the app. Your contribution will help us cover the cost of hosting the app, improving its features, and adding new recipes to the database.</string>
     <string name="about_us_title">Who Am I</string>
     <string name="about_us_donate">DONATE HKD 40</string>
+    <string name="layout_rul_image_view_iv">image</string>
+    <string name="biometric_decode_data">decode data</string>
 </resources>

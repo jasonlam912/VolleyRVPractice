@@ -1,25 +1,25 @@
 package com.jasonstudio.cookbook2
 
-import com.jasonstudio.cookbook2.Recipe.RecipeModel
-import androidx.recyclerview.widget.RecyclerView
-import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeViewModel
-import androidx.lifecycle.ViewModelProviders
-import androidx.fragment.app.FragmentActivity
-import android.view.ViewGroup
-import android.view.LayoutInflater
-import androidx.appcompat.widget.AppCompatTextView
-import android.content.Intent
-import androidx.core.app.ActivityOptionsCompat
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ToggleButton
 import androidx.annotation.ColorRes
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.util.Pair
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
 import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
+import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeViewModel
+import com.jasonstudio.cookbook2.Recipe.RecipeModel
 import com.jasonstudio.cookbook2.view.activity.RecipeActivity
 
 class RecipeAdapter(private val ct: Context, var recipeData: List<RecipeModel>) :
