@@ -5,13 +5,17 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.navigation.NavController
+import androidx.navigation.NavDeepLinkBuilder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -19,6 +23,10 @@ import com.google.firebase.messaging.RemoteMessage
 import com.jasonstudio.cookbook2.R
 import com.jasonstudio.cookbook2.ext.MyCustomTarget
 import com.jasonstudio.cookbook2.util.LogUtil
+import com.jasonstudio.cookbook2.view.activity.AboutUsActivity
+import com.jasonstudio.cookbook2.view.activity.BiometricActivity
+import com.jasonstudio.cookbook2.view.activity.FavouriteRecipeActivity
+import com.jasonstudio.cookbook2.view.activity.MainActivity
 import com.jasonstudio.cookbook2.view.activity.RecipeActivity
 
 
@@ -47,53 +55,72 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             LogUtil.log("Message Notification clickAction: ${it.clickAction}")
             LogUtil.log("Message Notification Body: ${it.body}")
             it.clickAction?.let { actString ->
+                var notificationIntent: Intent
                 when (ClickAction.valueOf(actString)) {
                     ClickAction.RECIPE -> {
-                        val notificationIntent = Intent(this@MyFirebaseMessagingService, RecipeActivity::class.java).apply {
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        }
+                        notificationIntent = Intent(this@MyFirebaseMessagingService, RecipeActivity::class.java)
                         notificationIntent.putExtra("id", remoteMessage.data["id"])
                         notificationIntent.putExtra("title", remoteMessage.data["title"])
-                        val contentIntent = PendingIntent.getActivity(
-                            this@MyFirebaseMessagingService,
-                            0, notificationIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                        )
-                        Glide.with(this@MyFirebaseMessagingService)
-                            .asBitmap()
-                            .load("https://spoonacular.com/cdn/ingredients_100x100/sugar-in-bowl.png")
-                            .timeout(60000)
-                            .into(object : MyCustomTarget<Bitmap>() {
-                                override fun onResourceReady(
-                                    resource: Bitmap,
-                                    transition: Transition<in Bitmap>?
-                                ) {
-                                    val noti: Notification = NotificationCompat.Builder(this@MyFirebaseMessagingService, this@MyFirebaseMessagingService.packageName)
-                                        .setContentTitle(it.title)
-                                        .setContentText(it.body)
-                                        .setSmallIcon(R.drawable.cook_book_icon)
-                                        .setLargeIcon(resource)
-                                        .setContentIntent(contentIntent)
-                                        .build()
-                                    NotificationManagerCompat.from(this@MyFirebaseMessagingService).apply {
-                                        if (ActivityCompat.checkSelfPermission(
-                                                this@MyFirebaseMessagingService,
-                                                Manifest.permission.POST_NOTIFICATIONS
-                                            ) != PackageManager.PERMISSION_GRANTED
-                                        ) {
-                                            return
-                                        }
-                                        notify(1, noti)
-                                    }
-                                }
-                            })
+                    }
+
+                    ClickAction.HOME -> {
+                        notificationIntent = Intent(this@MyFirebaseMessagingService, MainActivity::class.java)
+                    }
+                    ClickAction.BIOMETRIC -> {
+                        notificationIntent = Intent(this@MyFirebaseMessagingService, BiometricActivity::class.java)
+                    }
+                    ClickAction.ABOUT_US -> {
+                        notificationIntent = Intent(this@MyFirebaseMessagingService, AboutUsActivity::class.java)
+                    }
+                    ClickAction.FAVOURITE_RECIPE -> {
+                        notificationIntent = Intent(this@MyFirebaseMessagingService, FavouriteRecipeActivity::class.java)
                     }
                 }
+
+                val stackBuilder = TaskStackBuilder.create(this)
+
+                stackBuilder.addNextIntentWithParentStack(notificationIntent)
+                val contentIntent = stackBuilder.getPendingIntent(
+                    0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+
+                Glide.with(this@MyFirebaseMessagingService)
+                    .asBitmap()
+                    .load("https://spoonacular.com/recipeImages/${remoteMessage.data["id"]}-556x370.jpg")
+                    .timeout(60000)
+                    .into(object : MyCustomTarget<Bitmap>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap>?
+                        ) {
+                            val noti: Notification = NotificationCompat.Builder(this@MyFirebaseMessagingService, this@MyFirebaseMessagingService.packageName)
+                                .setContentTitle(it.title)
+                                .setContentText(it.body)
+                                .setSmallIcon(R.drawable.cook_book_icon)
+                                .setLargeIcon(resource)
+                                .setContentIntent(contentIntent)
+                                .build()
+                            NotificationManagerCompat.from(this@MyFirebaseMessagingService).apply {
+                                if (ActivityCompat.checkSelfPermission(
+                                        this@MyFirebaseMessagingService,
+                                        Manifest.permission.POST_NOTIFICATIONS
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                ) {
+                                    return
+                                }
+                                notify(1, noti)
+                            }
+                        }
+                    })
             }
         }
     }
 }
 
-enum class ClickAction(val rawValue: String) {
-    RECIPE("RECIPE"),
+enum class ClickAction {
+    RECIPE,
+    HOME,
+    BIOMETRIC,
+    ABOUT_US,
+    FAVOURITE_RECIPE,
 }

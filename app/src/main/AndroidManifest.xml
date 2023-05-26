@@ -17,9 +17,9 @@
         android:theme="@style/AppTheme2"
         tools:ignore="UnusedAttribute">
         <meta-data
-            android:name="com.jasonstudio.cookbook2.Network.CustomGlideModule"
+            android:name=".Network.CustomGlideModule"
             android:value="AppGlideModule"/>
-        <activity android:name="com.jasonstudio.cookbook2.view.activity.FavouriteRecipeActivity"
+        <activity android:name=".view.activity.FavouriteRecipeActivity"
             android:screenOrientation="portrait"
             android:parentActivityName="com.jasonstudio.cookbook2.view.activity.MainActivity"
             tools:ignore="LockedOrientationActivity">
@@ -29,19 +29,18 @@
         </activity>
         <activity
             android:screenOrientation="portrait"
-            android:name="com.jasonstudio.cookbook2.view.activity.RecipeActivity"
+            android:name=".view.activity.RecipeActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName="com.jasonstudio.cookbook2.view.activity.MainActivity"
             android:theme="@style/AppThemeRecipe"
+            android:parentActivityName="com.jasonstudio.cookbook2.view.activity.MainActivity"
             tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
-            android:name="com.jasonstudio.cookbook2.view.activity.MainActivity"
+            android:name=".view.activity.MainActivity"
             android:theme="@style/SplashScreenTheme"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -54,7 +53,7 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".view.activity.BiometricActivity"
-            android:parentActivityName="com.jasonstudio.cookbook2.view.activity.MainActivity"
+            android:parentActivityName="com.jasonstudio.cookbook2.view.activity.AboutUsActivity"
             tools:ignore="LockedOrientationActivity">
         </activity>
         <service

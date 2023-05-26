@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -64,7 +65,7 @@ class RecipeActivity : BaseActivity<ActivityRecipeBinding>(ActivityRecipeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("onCreateRcipeActivity", "here")
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+
         recipe_id = intent.getStringExtra("id") ?: ""
         recipe_title = intent.getStringExtra("title") ?: ""
         initializeToolBar()

@@ -3,6 +3,7 @@ package com.jasonstudio.cookbook2
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.util.Pair
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipe
 import com.jasonstudio.cookbook2.FavouriteRecipeModel.FavouriteRecipeViewModel
@@ -125,7 +127,6 @@ class RecipeAdapter(private val ct: Context, var recipeData: List<RecipeModel>) 
                 intent.putExtra("id", recipeData[adapterPosition].recipeId)
                 intent.putExtra("title", recipeData[adapterPosition].recipeTitle)
                 intent.putExtra("favourite_recipe", favouriteButton.isChecked)
-                //intent.putExtra("recipe_image", recipeData.get(getAdapterPosition()).getRecipeIamge());
                 ct.startActivity(intent, optionsCompat.toBundle())
             }
         }

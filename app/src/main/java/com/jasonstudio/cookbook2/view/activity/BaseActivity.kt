@@ -5,6 +5,7 @@ import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.os.StrictMode.VmPolicy
 import android.view.LayoutInflater
+import androidx.navigation.NavController
 import androidx.viewbinding.ViewBinding
 
 
@@ -31,6 +32,8 @@ abstract class BaseActivity<VB: ViewBinding> (
                 .penaltyLog()
                 .build()
         )
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
         setContentView(binding.root)
     }
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_top"
+    app:startDestination="@id/mainActivity">
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.jasonstudio.cookbook2.view.activity.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main">
+    </activity>
+    <activity
+        android:id="@+id/aboutUsActivity"
+        android:name="com.jasonstudio.cookbook2.view.activity.AboutUsActivity" />
+    <activity
+        android:id="@+id/recipeActivity"
+        android:name="com.jasonstudio.cookbook2.view.activity.RecipeActivity">
+        <deepLink app:uri="www.example.com"
+            app:action="android.intent.action.MY_ACTION"
+            app:mimeType="type/subtype"/>
+    </activity>
+
+</navigation>
